@@ -1,0 +1,42 @@
+.section {
+  align-self: stretch;
+}
+
+.ingredientsMenu {
+  display: flex;
+}
+
+.ingredientsMenu .tab {
+  max-width: calc((100vw - 40px) / 6);
+}
+
+.allIngridients {
+  overflow-y: scroll;
+  height: calc(100vh - 284px);
+  box-sizing: border-box;
+}
+
+.allIngridients::-webkit-scrollbar {
+  width: 8px;
+}
+
+.allIngridients::-webkit-scrollbar-track {
+  background: #2f2f37;
+}
+
+.allIngridients::-webkit-scrollbar-thumb {
+  background: #8585ad;
+}
+
+.allIngridients::-webkit-scrollbar-thumb:hover {
+  opacity: 0.6;
+}
+
+.ingredientsContainer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 24px;
+  row-gap: 32px;
+  list-style: none;
+  margin: 0;
+}

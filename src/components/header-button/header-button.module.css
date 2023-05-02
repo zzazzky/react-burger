@@ -1,0 +1,17 @@
+.button {
+  text-decoration: none;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: #f2f2f3;
+  margin: 0;
+}
+
+.button:last-child {
+  justify-self: end;
+}
+
+.button_unactive {
+  composes: button;
+  color: #8585ad;
+}
