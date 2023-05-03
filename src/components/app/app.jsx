@@ -7,12 +7,30 @@ import api from '../../utils/api';
 
 function App() {
   const [apiData, setApiData] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [replacementText, setReplacementText] = useState(
+    'Ваши бургеры летят к вам с края Вселенной'
+  );
+
+  useEffect(() => {
+    if (apiData.length > 0) {
+      setIsLoaded(true);
+      replacementText !== 'Ваши бургеры летят к вам с края Вселенной' &&
+        setReplacementText('Ваши бургеры летят к вам с края Вселенной');
+    } else {
+      setIsLoaded(false);
+    }
+  }, [apiData]);
 
   useEffect(() => {
     api
       .getIngredients()
       .then((res) => setApiData(res))
-      .catch((err) => console.log(err));
+      .catch(() =>
+        setReplacementText(
+          'Упс, что-то пошло не так и ваши бургеры улетели в соседнюю галактику! Попробуйте перезагрузить страницу, вдруг они уже прилетели'
+        )
+      );
   }, []);
 
   return (
@@ -23,7 +41,11 @@ function App() {
           {
             //компонент страницы для того, чтобы не переделывать  структуру при реализации роутера
           }
-          <BurgerMaker data={apiData} />
+          <BurgerMaker
+            data={apiData}
+            isLoaded={isLoaded}
+            replacementText={replacementText}
+          />
         </main>
       </div>
     </BrowserRouter>

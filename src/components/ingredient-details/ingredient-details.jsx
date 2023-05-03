@@ -1,16 +1,10 @@
 import PropTypes from 'prop-types';
 import dataPropTypes from '../../utils/dataPropsType';
-import { createPortal } from 'react-dom';
 import ingredientDetailsStyle from './ingredient-details.module.css';
-import Modal from '../modal/modal';
-
-const modalRoot = document.getElementById('react-modals');
 
 function IngredientDetails(props) {
-  return createPortal(
-    <Modal
-      onClose={props.onClose}
-      title='Детали ингридиента'>
+  return (
+    <>
       <img
         alt={props.ingredient.name}
         src={props.ingredient.image}
@@ -63,14 +57,12 @@ function IngredientDetails(props) {
           </p>
         </li>
       </ul>
-    </Modal>,
-    modalRoot
+    </>
   );
 }
 
 IngredientDetails.propTypes = {
   ingredient: dataPropTypes.isRequired,
-  onClose: PropTypes.func.isRequired,
 };
 
 export default IngredientDetails;

@@ -1,5 +1,5 @@
 import headerStyles from './app-header.module.css';
-import HeaderButton from '../header-button/header-button';
+import HeaderLink from '../header-link/header-link';
 import { Logo } from '@ya.praktikum/react-developer-burger-ui-components';
 import { BurgerIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { ListIcon } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -10,23 +10,23 @@ function AppHeader() {
     <header className={`${headerStyles.appHeader}  pb-4 pt-4`}>
       <nav className={headerStyles.navBar}>
         <div className={headerStyles.headerContainer}>
-          <HeaderButton
+          <HeaderLink
             icon={BurgerIcon}
-            buttonText='Конструктор'
-            to='/'
-          />
-          <HeaderButton
+            to='/'>
+            Конструктор
+          </HeaderLink>
+          <HeaderLink
             icon={ListIcon}
-            buttonText='Лента заказов'
-            to='/'
-          />
+            to='/'>
+            Лента заказов
+          </HeaderLink>
         </div>
         <Logo />
-        <HeaderButton
+        <HeaderLink
           icon={ProfileIcon}
-          buttonText='Личный кабинет'
-          to='/'
-        />
+          to='/'>
+          Личный кабинет
+        </HeaderLink>
       </nav>
     </header>
   );

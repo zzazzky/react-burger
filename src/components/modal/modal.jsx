@@ -1,15 +1,28 @@
+import { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
-import dataPropTypes from '../../utils/dataPropsType';
 import modalStyles from './modal.module.css';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import ModalOverlay from '../modal-overlay/modal-overlay';
 
 function Modal(props) {
-  return (
+  function handleEscDown(e) {
+    e.key === 'Escape' && props.onClose();
+  }
+
+  const modalRoot = document.getElementById('react-modals');
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleEscDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleEscDown);
+    };
+  }, []);
+
+  return createPortal(
     <section className={modalStyles.modal}>
-      <div
-        className={`${modalStyles.container} ${
-          document.documentElement.clientWidth > 1024 ? 'p-10' : 'p-5'
-        }`}>
+      <div className={`${modalStyles.container} p-10`}>
         <div className={modalStyles.titleContainer}>
           <h2 className='text text_type_main-large'>{props.title}</h2>
           <button
@@ -20,13 +33,16 @@ function Modal(props) {
         </div>
         <div className={modalStyles.contentContainer}>{props.children}</div>
       </div>
-    </section>
+      <ModalOverlay onClose={props.onClose} />
+    </section>,
+    modalRoot
   );
 }
 
 Modal.propTypes = {
   title: PropTypes.string,
-  onClose: PropTypes.func,
+  onClose: PropTypes.func.isRequired,
+  children: PropTypes.element.isRequired,
 };
 
 export default Modal;

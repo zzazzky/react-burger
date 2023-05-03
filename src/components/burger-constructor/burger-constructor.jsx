@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import dataPropTypes from '../../utils/dataPropsType';
 import burgerConstructorStyles from './burger-constructor.module.css';
@@ -9,91 +9,70 @@ import {
   Button,
   ConstructorElement,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import Modal from '../modal/modal';
 
 function BurgerConstructor(props) {
   const [orderDetailsIsOpen, setOrderDetailsIsOpen] = useState(false);
-  const [sum, setSum] = useState(0);
 
-  function handleOrderButtonClick() {
+  const { bun, ingredients } = useMemo(() => {
+    return {
+      bun: props.data.find((item) => item.type === 'bun'),
+      ingredients: props.data.filter((item) => item.type !== 'bun'),
+    };
+  }, [JSON.stringify(props.data)]);
+
+  const handleOrderButtonClick = useCallback(() => {
     setOrderDetailsIsOpen(true);
-  }
+  }, []);
 
-  function closeOrderDetails() {
+  const closeOrderDetails = useCallback(() => {
     setOrderDetailsIsOpen(false);
-  }
+  }, []);
 
-  useEffect(() => {
-    setSum(
-      props.data.reduce((previousValue, item) => {
-        return previousValue + item.price;
-      }, 0)
-    );
+  const sum = useMemo(() => {
+    return props.data.reduce((previousValue, item) => {
+      return previousValue + item.price;
+    }, 0);
   }, [JSON.stringify(props.data)]);
 
   return (
     <section className={`${burgerConstructorStyles.section} pt-15 pl-4`}>
       <div className={`${burgerConstructorStyles.container} mb-10`}>
         <div className={`${burgerConstructorStyles.lockContainer} pl-8 pr-4`}>
-          {props.data
-            .filter((item) => {
-              //выбор булки захардкоржен для сдачи верстки, т.к. на данный момент не реализовано добавление ингридиентов в конструктор и иначе добавляются обе булки
-              return (
-                item.type === 'bun' && item.name === 'Краторная булка N-200i'
-              );
-            })
-            .map((filteredItem) => {
-              return (
-                <ConstructorElement
-                  type='top'
-                  isLocked={true}
-                  key={filteredItem._id}
-                  text={filteredItem.name}
-                  price={filteredItem.price}
-                  thumbnail={filteredItem.image}
-                />
-              );
-            })}
+          <ConstructorElement
+            type='top'
+            isLocked={true}
+            key={bun._id}
+            text={`${bun.name} (верх)`}
+            price={bun.price}
+            thumbnail={bun.image}
+          />
         </div>
         <ul className={burgerConstructorStyles.dragContainer}>
-          {props.data
-            .filter((item) => {
-              return item.type !== 'bun';
-            })
-            .map((filteredItem) => {
-              return (
-                <div
-                  key={filteredItem._id}
-                  className={burgerConstructorStyles.itemContainer}>
-                  <DragIcon type='primary' />
-                  <ConstructorElement
-                    text={filteredItem.name}
-                    price={filteredItem.price}
-                    thumbnail={filteredItem.image}
-                  />
-                </div>
-              );
-            })}
+          {ingredients.map((item) => {
+            return (
+              <div
+                key={item._id}
+                className={burgerConstructorStyles.itemContainer}>
+                <DragIcon type='primary' />
+                <ConstructorElement
+                  text={item.name}
+                  price={item.price}
+                  thumbnail={item.image}
+                />
+              </div>
+            );
+          })}
         </ul>
         <div className={`${burgerConstructorStyles.lockContainer} pl-8 pr-4`}>
-          {props.data
-            .filter((item) => {
-              //выбор булки захардкоржен для сдачи верстки, т.к. на данный момент не реализовано добавление ингридиентов в конструктор и иначе добавляются обе булки
-              return (
-                item.type === 'bun' && item.name === 'Краторная булка N-200i'
-              );
-            })
-            .map((filteredItem) => {
-              return (
-                <ConstructorElement
-                  type='bottom'
-                  isLocked={true}
-                  key={filteredItem._id}
-                  text={filteredItem.name}
-                  price={filteredItem.price}
-                  thumbnail={filteredItem.image}
-                />
-              );
-            })}
+          <ConstructorElement
+            type='bottom'
+            isLocked={true}
+            key={bun._id}
+            text={`${bun.name} (низ)`}
+            price={bun.price}
+            thumbnail={bun.image}
+          />
         </div>
       </div>
       <div className={burgerConstructorStyles.buttonContainer}>
@@ -109,13 +88,17 @@ function BurgerConstructor(props) {
           Оформить заказ
         </Button>
       </div>
-      {orderDetailsIsOpen && <OrderDetails onClose={closeOrderDetails} />}
+      {orderDetailsIsOpen && (
+        <Modal onClose={closeOrderDetails}>
+          <OrderDetails />
+        </Modal>
+      )}
     </section>
   );
 }
 
 BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(dataPropTypes).isRequired,
+  data: PropTypes.arrayOf(dataPropTypes.isRequired).isRequired,
 };
 
 export default BurgerConstructor;

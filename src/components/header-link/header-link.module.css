@@ -1,4 +1,4 @@
-.button {
+.link {
   text-decoration: none;
   display: flex;
   flex-direction: row;
@@ -7,11 +7,11 @@
   margin: 0;
 }
 
-.button:last-child {
+.link:last-child {
   justify-self: end;
 }
 
-.button_unactive {
-  composes: button;
+.link_unactive {
+  composes: link;
   color: #8585ad;
 }

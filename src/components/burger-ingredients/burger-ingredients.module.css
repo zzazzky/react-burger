@@ -31,12 +31,3 @@
 .allIngridients::-webkit-scrollbar-thumb:hover {
   opacity: 0.6;
 }
-
-.ingredientsContainer {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  column-gap: 24px;
-  row-gap: 32px;
-  list-style: none;
-  margin: 0;
-}

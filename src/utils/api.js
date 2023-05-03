@@ -5,18 +5,20 @@ class Api {
     this.url = url;
   }
 
-  _request(url, options) {
-    return fetch(url, options).then((res) => {
-      if (res.ok) {
-        return res.json();
-      } else {
-        return Promise.reject(res.status);
-      }
-    });
+  #checkRes(res) {
+    if (res.ok) {
+      return res.json();
+    } else {
+      return Promise.reject(res.status);
+    }
+  }
+
+  #request(url, options) {
+    return fetch(url, options).then((res) => this.#checkRes(res));
   }
 
   getIngredients() {
-    return this._request(`${this.url}/ingredients`, {
+    return this.#request(`${this.url}/ingredients`, {
       method: 'GET',
     }).then((res) => res.data);
   }

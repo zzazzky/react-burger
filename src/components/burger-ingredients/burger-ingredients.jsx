@@ -1,3 +1,4 @@
+import { useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import dataPropTypes from '../../utils/dataPropsType';
 import burgerIngridientStyles from './burger-ingredients.module.css';
@@ -5,19 +6,30 @@ import { useState } from 'react';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import Ingredient from '../ingredient/ingredient';
+import IngredientsCategory from '../ingredients-category/ingredients-category';
+import Modal from '../modal/modal';
 
 function BurgerIngredients(props) {
   const [ingredientDetailsIsOpen, setIngredientDetailsIsOpen] = useState(false);
-  const [currentIngredient, setCurrentIngredient] = useState({});
+  const [currentIngredient, setCurrentIngredient] = useState(null);
 
-  function handleIngredientClick(ingredient) {
+  const { buns, mains, sauce } = useMemo(() => {
+    return {
+      buns: props.data.filter((item) => item.type === 'bun'),
+      mains: props.data.filter((item) => item.type === 'main'),
+      sauce: props.data.filter((item) => item.type === 'sauce'),
+    };
+  }, [JSON.stringify(props.data)]);
+
+  const handleIngredientClick = useCallback((ingredient) => {
     setCurrentIngredient(ingredient);
     setIngredientDetailsIsOpen(true);
-  }
+  }, []);
 
-  function closeIngredientDetails() {
+  const closeIngredientDetails = useCallback(() => {
     setIngredientDetailsIsOpen(false);
-  }
+  }, []);
+
   return (
     <section className={burgerIngridientStyles.section}>
       <h1 className='mb-5 main-title text text_type_main-large'>
@@ -41,69 +53,58 @@ function BurgerIngredients(props) {
         </Tab>
       </div>
       <div className={burgerIngridientStyles.allIngridients}>
-        <h3 className='text text_type_main-medium mt-10'>Булки</h3>
-        <ul
-          className={`${burgerIngridientStyles.ingredientsContainer} pl-4 pr-2`}>
-          {props.data
-            .filter((item) => item.type === 'bun')
-            .map((filteredItem) => {
-              return (
-                <li key={filteredItem._id}>
-                  {' '}
-                  <Ingredient
-                    ingredient={filteredItem}
-                    onClick={handleIngredientClick}
-                  />
-                </li>
-              );
-            })}
-        </ul>
-        <h3 className='text text_type_main-medium mt-10'>Соусы</h3>
-        <ul
-          className={`${burgerIngridientStyles.ingredientsContainer} pl-4 pr-2`}>
-          {props.data
-            .filter((item) => item.type === 'sauce')
-            .map((filteredItem) => {
-              return (
-                <li key={filteredItem._id}>
-                  <Ingredient
-                    ingredient={filteredItem}
-                    onClick={handleIngredientClick}
-                  />
-                </li>
-              );
-            })}
-        </ul>
-        <h3 className='text text_type_main-medium mt-10 mb-6'>Начинки</h3>
-        <ul
-          className={`${burgerIngridientStyles.ingredientsContainer} pl-4 pr-2`}>
-          {props.data
-            .filter((item) => item.type === 'main')
-            .map((filteredItem) => {
-              return (
-                <li key={filteredItem._id}>
-                  {' '}
-                  <Ingredient
-                    ingredient={filteredItem}
-                    onClick={handleIngredientClick}
-                  />
-                </li>
-              );
-            })}
-        </ul>
+        <IngredientsCategory text='Булки'>
+          {buns.map((filteredItem) => {
+            return (
+              <li key={filteredItem._id}>
+                {' '}
+                <Ingredient
+                  ingredient={filteredItem}
+                  onClick={handleIngredientClick}
+                />
+              </li>
+            );
+          })}
+        </IngredientsCategory>
+        <IngredientsCategory text='Соусы'>
+          {sauce.map((filteredItem) => {
+            return (
+              <li key={filteredItem._id}>
+                <Ingredient
+                  ingredient={filteredItem}
+                  onClick={handleIngredientClick}
+                />
+              </li>
+            );
+          })}
+        </IngredientsCategory>
+        <IngredientsCategory text='Начинки'>
+          {mains.map((filteredItem) => {
+            return (
+              <li key={filteredItem._id}>
+                {' '}
+                <Ingredient
+                  ingredient={filteredItem}
+                  onClick={handleIngredientClick}
+                />
+              </li>
+            );
+          })}
+        </IngredientsCategory>
       </div>
       {ingredientDetailsIsOpen && (
-        <IngredientDetails
+        <Modal
           onClose={closeIngredientDetails}
-          ingredient={currentIngredient}
-        />
+          title='Детали ингридиента'>
+          <IngredientDetails ingredient={currentIngredient} />
+        </Modal>
       )}
     </section>
   );
 }
 
 BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(dataPropTypes).isRequired,
+  data: PropTypes.arrayOf(dataPropTypes.isRequired).isRequired,
 };
 
 export default BurgerIngredients;
