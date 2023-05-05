@@ -1,0 +1,17 @@
+.link {
+  text-decoration: none;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: #f2f2f3;
+  margin: 0;
+}
+
+.link:last-child {
+  justify-self: end;
+}
+
+.link_unactive {
+  composes: link;
+  color: #8585ad;
+}
