@@ -19,7 +19,7 @@ function BurgerIngredients(props) {
       mains: props.data.filter((item) => item.type === 'main'),
       sauce: props.data.filter((item) => item.type === 'sauce'),
     };
-  }, [JSON.stringify(props.data)]);
+  }, [props.data]);
 
   const handleIngredientClick = useCallback((ingredient) => {
     setCurrentIngredient(ingredient);

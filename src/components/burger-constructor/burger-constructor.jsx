@@ -19,7 +19,7 @@ function BurgerConstructor(props) {
       bun: props.data.find((item) => item.type === 'bun'),
       ingredients: props.data.filter((item) => item.type !== 'bun'),
     };
-  }, [JSON.stringify(props.data)]);
+  }, [props.data]);
 
   const handleOrderButtonClick = useCallback(() => {
     setOrderDetailsIsOpen(true);
@@ -33,7 +33,7 @@ function BurgerConstructor(props) {
     return props.data.reduce((previousValue, item) => {
       return previousValue + item.price;
     }, 0);
-  }, [JSON.stringify(props.data)]);
+  }, [props.data]);
 
   return (
     <section className={`${burgerConstructorStyles.section} pt-15 pl-4`}>
