@@ -1,54 +1,41 @@
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import './app.css';
 import AppHeader from '../app-header/app-header';
 import BurgerMaker from '../burger-maker/burger-maker';
-import { BrowserRouter } from 'react-router-dom';
-import api from '../../utils/api';
+import { getIngredientsFeed } from '../../services/actions/ingredients';
 
 function App() {
-  const [apiData, setApiData] = useState([]);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [replacementText, setReplacementText] = useState(
-    'Ваши бургеры летят к вам с края Вселенной'
+  const dispatch = useDispatch();
+
+  const { ingredientsRequest, ingredientsFeedFailed } = useSelector(
+    (store) => ({
+      ingredientsRequest: store.ingredients.ingredientsRequest,
+      ingredientsFeedFailed: store.ingredients.ingredientsFeedFailed,
+    })
   );
 
-  useEffect(() => {
-    if (apiData.length > 0) {
-      setIsLoaded(true);
-      replacementText !== 'Ваши бургеры летят к вам с края Вселенной' &&
-        setReplacementText('Ваши бургеры летят к вам с края Вселенной');
-    } else {
-      setIsLoaded(false);
-    }
-  }, [apiData]);
+  const replacementText = !ingredientsFeedFailed
+    ? 'Ваши бургеры летят к вам с края Вселенной'
+    : 'Упс, что-то пошло не так и ваши бургеры улетели в соседнюю галактику! Попробуйте перезагрузить страницу, вдруг они уже прилетели';
 
   useEffect(() => {
-    api
-      .getIngredients()
-      .then((res) => setApiData(res))
-      .catch(() =>
-        setReplacementText(
-          'Упс, что-то пошло не так и ваши бургеры улетели в соседнюю галактику! Попробуйте перезагрузить страницу, вдруг они уже прилетели'
-        )
-      );
+    dispatch(getIngredientsFeed());
   }, []);
 
   return (
-    <BrowserRouter>
-      <div className='app'>
-        <AppHeader />
-        <main className='pt-10 pb-10 main'>
-          {
-            //компонент страницы для того, чтобы не переделывать  структуру при реализации роутера
-          }
-          <BurgerMaker
-            data={apiData}
-            isLoaded={isLoaded}
-            replacementText={replacementText}
-          />
-        </main>
-      </div>
-    </BrowserRouter>
+    <div className='app'>
+      <AppHeader />
+      <main className='pt-10 pb-10 main'>
+        {
+          //компонент страницы для того, чтобы не переделывать  структуру при реализации роутера
+        }
+        <BurgerMaker
+          isLoaded={!ingredientsRequest && !ingredientsFeedFailed}
+          replacementText={replacementText}
+        />
+      </main>
+    </div>
   );
 }
 

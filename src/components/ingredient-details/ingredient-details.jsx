@@ -1,16 +1,21 @@
-import PropTypes from 'prop-types';
-import dataPropTypes from '../../utils/dataPropsType';
+import { useSelector } from 'react-redux';
 import ingredientDetailsStyle from './ingredient-details.module.css';
 
-function IngredientDetails(props) {
+function IngredientDetails() {
+  const { currentIngredient } = useSelector((store) => ({
+    currentIngredient: store.ingredients.currentIngredient,
+  }));
+
   return (
     <>
       <img
-        alt={props.ingredient.name}
-        src={props.ingredient.image}
+        alt={currentIngredient.name}
+        src={currentIngredient.image}
         className={ingredientDetailsStyle.picture}
       />
-      <p className='text text_type_main-medium mt-4'>{props.ingredient.name}</p>
+      <p className='text text_type_main-medium mt-4'>
+        {currentIngredient.name}
+      </p>
       <ul className={`${ingredientDetailsStyle.nutritional} mt-8 mb-5`}>
         <li
           key='calories'
@@ -20,7 +25,7 @@ function IngredientDetails(props) {
           </p>
           <p
             className={`${ingredientDetailsStyle.nutritionalNumber} text text_type_digits-default text_color_inactive mt-2`}>
-            {props.ingredient.calories}
+            {currentIngredient.calories}
           </p>
         </li>
         <li
@@ -31,7 +36,7 @@ function IngredientDetails(props) {
           </p>
           <p
             className={`${ingredientDetailsStyle.nutritionalNumber} text text_type_digits-default text_color_inactive mt-2`}>
-            {props.ingredient.proteins}
+            {currentIngredient.proteins}
           </p>
         </li>
         <li
@@ -42,7 +47,7 @@ function IngredientDetails(props) {
           </p>
           <p
             className={`${ingredientDetailsStyle.nutritionalNumber} text text_type_digits-default text_color_inactive mt-2`}>
-            {props.ingredient.fat}
+            {currentIngredient.fat}
           </p>
         </li>
         <li
@@ -53,16 +58,12 @@ function IngredientDetails(props) {
           </p>
           <p
             className={`text text_type_digits-default text_color_inactive mt-2`}>
-            {props.ingredient.carbohydrates}
+            {currentIngredient.carbohydrates}
           </p>
         </li>
       </ul>
     </>
   );
 }
-
-IngredientDetails.propTypes = {
-  ingredient: dataPropTypes.isRequired,
-};
 
 export default IngredientDetails;

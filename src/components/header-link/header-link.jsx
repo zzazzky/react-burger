@@ -5,10 +5,10 @@ import { NavLink } from 'react-router-dom';
 function HeaderLink(props) {
   //временное решение до реализации роутера
   const linkClass =
-    props.text === 'Конструктор'
+    props.children === 'Конструктор'
       ? headerLinkStyles.link
       : headerLinkStyles.link_unactive;
-  const IconType = props.text === 'Конструктор' ? 'primary' : 'secondary';
+  const IconType = props.children === 'Конструктор' ? 'primary' : 'secondary';
   const Icon = <props.icon type={IconType} />;
 
   return (

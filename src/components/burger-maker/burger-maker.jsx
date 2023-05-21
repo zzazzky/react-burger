@@ -1,17 +1,17 @@
-import PropTypes from 'prop-types';
-import dataPropTypes from '../../utils/dataPropsType';
 import burgerMakerStyles from './burger-maker.module.css';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 function BurgerMaker(props) {
   if (props.isLoaded) {
     return (
       <div className={burgerMakerStyles.container}>
-        <>
-          <BurgerIngredients data={props.data} />
-          <BurgerConstructor data={props.data} />
-        </>
+        <DndProvider backend={HTML5Backend}>
+          <BurgerIngredients />
+          <BurgerConstructor />
+        </DndProvider>
       </div>
     );
   } else {
@@ -22,11 +22,5 @@ function BurgerMaker(props) {
     );
   }
 }
-
-BurgerMaker.propTypes = {
-  data: PropTypes.arrayOf(dataPropTypes.isRequired).isRequired,
-  isLoaded: PropTypes.bool.isRequired,
-  replacementText: PropTypes.string.isRequired,
-};
 
 export default BurgerMaker;

@@ -12,16 +12,6 @@
   box-sizing: border-box;
 }
 
-.itemContainer {
-  display: flex;
-  align-items: center;
-}
-
-.itemContainer svg {
-  margin-right: 8px;
-  width: 26px;
-}
-
 .lockContainer {
   display: grid;
   flex-direction: column;

@@ -1,43 +1,57 @@
-import { useState, useCallback, useMemo } from 'react';
-import PropTypes from 'prop-types';
-import dataPropTypes from '../../utils/dataPropsType';
+import { useState, useCallback, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useDrop } from 'react-dnd';
 import burgerConstructorStyles from './burger-constructor.module.css';
 import OrderDetails from '../order-details/order-details';
+import DraggableContainer from '../constructor-draggable-ingredient/constructor-draggable-ingredient';
 import {
   CurrencyIcon,
-  DragIcon,
   Button,
   ConstructorElement,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
+import { sendOrder } from '../../services/actions/order';
+import { ADD_CONSTRUCTOR_INGREDIENT } from '../../services/actions/constructor';
+function BurgerConstructor() {
+  const dispatch = useDispatch();
 
-function BurgerConstructor(props) {
   const [orderDetailsIsOpen, setOrderDetailsIsOpen] = useState(false);
+  const { bun, ingredients, sum } = useSelector((store) => ({
+    bun: store.constructor.bun,
+    ingredients: store.constructor.ingredients,
+    sum: store.constructor.sum,
+  }));
 
-  const { bun, ingredients } = useMemo(() => {
-    return {
-      bun: props.data.find((item) => item.type === 'bun'),
-      ingredients: props.data.filter((item) => item.type !== 'bun'),
-    };
-  }, [props.data]);
+  const [, ingredientDropTarget] = useDrop({
+    accept: 'ingredient',
+    drop(ingredient) {
+      handleIngredientDrop(ingredient);
+    },
+  });
+
+  const handleIngredientDrop = (ingredient) => {
+    dispatch({
+      type: ADD_CONSTRUCTOR_INGREDIENT,
+      payload: {
+        ingredient: ingredient,
+      },
+    });
+  };
 
   const handleOrderButtonClick = useCallback(() => {
     setOrderDetailsIsOpen(true);
-  }, []);
+    dispatch(sendOrder([bun, ...ingredients]));
+  }, [bun, ingredients]);
 
   const closeOrderDetails = useCallback(() => {
     setOrderDetailsIsOpen(false);
   }, []);
 
-  const sum = useMemo(() => {
-    return props.data.reduce((previousValue, item) => {
-      return previousValue + item.price;
-    }, 0);
-  }, [props.data]);
-
   return (
     <section className={`${burgerConstructorStyles.section} pt-15 pl-4`}>
-      <div className={`${burgerConstructorStyles.container} mb-10`}>
+      <div
+        className={`${burgerConstructorStyles.container} mb-10`}
+        ref={ingredientDropTarget}>
         <div className={`${burgerConstructorStyles.lockContainer} pl-8 pr-4`}>
           <ConstructorElement
             type='top'
@@ -49,18 +63,13 @@ function BurgerConstructor(props) {
           />
         </div>
         <ul className={burgerConstructorStyles.dragContainer}>
-          {ingredients.map((item) => {
+          {ingredients.map((item, index) => {
             return (
-              <div
-                key={item._id}
-                className={burgerConstructorStyles.itemContainer}>
-                <DragIcon type='primary' />
-                <ConstructorElement
-                  text={item.name}
-                  price={item.price}
-                  thumbnail={item.image}
-                />
-              </div>
+              <DraggableContainer
+                key={item._id + index}
+                ingredient={item}
+                index={index}
+              />
             );
           })}
         </ul>
@@ -96,9 +105,5 @@ function BurgerConstructor(props) {
     </section>
   );
 }
-
-BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(dataPropTypes.isRequired).isRequired,
-};
 
 export default BurgerConstructor;
