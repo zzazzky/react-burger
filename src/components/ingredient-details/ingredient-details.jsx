@@ -2,9 +2,9 @@ import { useSelector } from 'react-redux';
 import ingredientDetailsStyle from './ingredient-details.module.css';
 
 function IngredientDetails() {
-  const { currentIngredient } = useSelector((store) => ({
-    currentIngredient: store.ingredients.currentIngredient,
-  }));
+  const currentIngredient = useSelector(
+    (store) => store.ingredients.currentIngredient
+  );
 
   return (
     <>

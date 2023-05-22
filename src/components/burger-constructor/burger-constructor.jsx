@@ -16,12 +16,13 @@ function BurgerConstructor() {
   const dispatch = useDispatch();
 
   const [orderDetailsIsOpen, setOrderDetailsIsOpen] = useState(false);
-  const { bun, ingredients, sum } = useSelector((store) => ({
-    bun: store.constructor.bun,
-    ingredients: store.constructor.ingredients,
-    sum: store.constructor.sum,
-  }));
+  const currentBun = useSelector((store) => store.constructor.bun);
 
+  const currentIngredients = useSelector(
+    (store) => store.constructor.ingredients
+  );
+
+  const sum = useSelector((store) => store.constructor.sum);
   const [, ingredientDropTarget] = useDrop({
     accept: 'ingredient',
     drop(ingredient) {
@@ -40,8 +41,8 @@ function BurgerConstructor() {
 
   const handleOrderButtonClick = useCallback(() => {
     setOrderDetailsIsOpen(true);
-    dispatch(sendOrder([bun, ...ingredients]));
-  }, [bun, ingredients]);
+    dispatch(sendOrder([currentBun, ...currentIngredients]));
+  }, [currentBun, currentIngredients]);
 
   const closeOrderDetails = useCallback(() => {
     setOrderDetailsIsOpen(false);
@@ -56,14 +57,14 @@ function BurgerConstructor() {
           <ConstructorElement
             type='top'
             isLocked={true}
-            key={bun._id}
-            text={`${bun.name} (верх)`}
-            price={bun.price}
-            thumbnail={bun.image}
+            key={currentBun?._id}
+            text={`${currentBun?.name} (верх)`}
+            price={currentBun?.price}
+            thumbnail={currentBun?.image}
           />
         </div>
         <ul className={burgerConstructorStyles.dragContainer}>
-          {ingredients.map((item, index) => {
+          {currentIngredients?.map((item, index) => {
             return (
               <DraggableContainer
                 key={item._id + index}
@@ -77,10 +78,10 @@ function BurgerConstructor() {
           <ConstructorElement
             type='bottom'
             isLocked={true}
-            key={bun._id}
-            text={`${bun.name} (низ)`}
-            price={bun.price}
-            thumbnail={bun.image}
+            key={currentBun?._id}
+            text={`${currentBun?.name} (низ)`}
+            price={currentBun?.price}
+            thumbnail={currentBun?.image}
           />
         </div>
       </div>

@@ -14,7 +14,6 @@ import {
 function BurgerIngredients() {
   const dispatch = useDispatch();
 
-  const [ingredientDetailsIsOpen, setIngredientDetailsIsOpen] = useState(false);
   const [currentTab, setCurrentTab] = useState('buns');
 
   const bunsRef = createRef();
@@ -27,14 +26,21 @@ function BurgerIngredients() {
     setContainerRefTop(containerRef.current.getBoundingClientRect().top);
   }, []);
 
-  const { buns, mains, sauces, constructorBun, constructorIngredients } =
-    useSelector((store) => ({
-      buns: store.ingredients.buns,
-      mains: store.ingredients.mains,
-      sauces: store.ingredients.sauces,
-      constructorBun: store.constructor.bun,
-      constructorIngredients: store.constructor.ingredients,
-    }));
+  const buns = useSelector((store) => store.ingredients.buns);
+
+  const mains = useSelector((store) => store.ingredients.mains);
+
+  const sauces = useSelector((store) => store.ingredients.sauces);
+
+  const constructorBun = useSelector((store) => store.constructor.bun);
+
+  const constructorIngredients = useSelector(
+    (store) => store.constructor.ingredients
+  );
+
+  const currentIngredient = useSelector(
+    (store) => store.ingredients.currentIngredient
+  );
 
   const handleIngredientContainerScroll = () => {
     if (
@@ -71,11 +77,9 @@ function BurgerIngredients() {
         ingredient: ingredient,
       },
     });
-    setIngredientDetailsIsOpen(true);
   }, []);
 
   const closeIngredientDetails = useCallback(() => {
-    setIngredientDetailsIsOpen(false);
     dispatch({
       type: DELETE_CURRENT_INGREDIENT,
     });
@@ -119,12 +123,12 @@ function BurgerIngredients() {
         <IngredientsCategory
           text='Булки'
           ref={bunsRef}>
-          {buns.map((filteredItem) => {
+          {buns?.map((filteredItem) => {
             return (
-              <li key={filteredItem._id}>
+              <li key={filteredItem?._id}>
                 {' '}
                 <Ingredient
-                  count={constructorBun._id === filteredItem._id && 1}
+                  count={constructorBun?._id === filteredItem?._id && 1}
                   ingredient={filteredItem}
                   onClick={handleIngredientClick}
                 />
@@ -135,16 +139,16 @@ function BurgerIngredients() {
         <IngredientsCategory
           text='Соусы'
           ref={saucesRef}>
-          {sauces.map((filteredItem) => {
+          {sauces?.map((filteredItem) => {
             return (
-              <li key={filteredItem._id}>
+              <li key={filteredItem?._id}>
                 <Ingredient
                   count={
-                    constructorIngredients.find(
-                      (item) => item._id === filteredItem._id
+                    constructorIngredients?.find(
+                      (item) => item?._id === filteredItem?._id
                     ) &&
-                    constructorIngredients.filter(
-                      (item) => item._id === filteredItem._id
+                    constructorIngredients?.filter(
+                      (item) => item?._id === filteredItem?._id
                     ).length
                   }
                   ingredient={filteredItem}
@@ -157,14 +161,14 @@ function BurgerIngredients() {
         <IngredientsCategory
           text='Начинки'
           ref={mainsRef}>
-          {mains.map((filteredItem) => {
+          {mains?.map((filteredItem) => {
             return (
-              <li key={filteredItem._id}>
+              <li key={filteredItem?._id}>
                 {' '}
                 <Ingredient
                   count={
-                    constructorIngredients.filter(
-                      (item) => item._id === filteredItem._id
+                    constructorIngredients?.filter(
+                      (item) => item?._id === filteredItem?._id
                     ).length
                   }
                   ingredient={filteredItem}
@@ -175,7 +179,7 @@ function BurgerIngredients() {
           })}
         </IngredientsCategory>
       </div>
-      {ingredientDetailsIsOpen && (
+      {currentIngredient && (
         <Modal
           onClose={closeIngredientDetails}
           title='Детали ингредиента'>

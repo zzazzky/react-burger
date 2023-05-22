@@ -7,13 +7,12 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
 function OrderDetails() {
-  const { orderNumber, orderRequest, orderFeedFailed } = useSelector(
-    (store) => ({
-      orderNumber: store.order.currentOrder.number,
-      orderRequest: store.order.orderRequest,
-      orderFeedFailed: store.order.orderFeedFailed,
-    })
-  );
+  const orderNumber = useSelector((store) => store.order.currentOrder.number);
+
+  const orderRequest = useSelector((store) => store.order.orderRequest);
+
+  const orderFeedFailed = useSelector((store) => store.order.orderFeedFailed);
+
   const replacementText =
     orderRequest && !orderFeedFailed
       ? 'Отправляем заказ'

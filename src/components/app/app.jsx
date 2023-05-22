@@ -8,11 +8,12 @@ import { getIngredientsFeed } from '../../services/actions/ingredients';
 function App() {
   const dispatch = useDispatch();
 
-  const { ingredientsRequest, ingredientsFeedFailed } = useSelector(
-    (store) => ({
-      ingredientsRequest: store.ingredients.ingredientsRequest,
-      ingredientsFeedFailed: store.ingredients.ingredientsFeedFailed,
-    })
+  const ingredientsRequest = useSelector(
+    (store) => store.ingredients.ingredientsRequest
+  );
+
+  const ingredientsFeedFailed = useSelector(
+    (store) => store.ingredients.ingredientsFeedFailed
   );
 
   const replacementText = !ingredientsFeedFailed

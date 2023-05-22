@@ -7,7 +7,6 @@ const GET_ORDER_FEED_FAILED = 'GET_ORDER_FEED_FAILED';
 const GET_ORDER_FEED_SUCCESS = 'GET_ORDER_FEED_SUCCESS';
 
 const sendOrder = (ingredients) => {
-  console.log(ingredients);
   return function (dispatch) {
     dispatch({
       type: GET_ORDER_FEED,
