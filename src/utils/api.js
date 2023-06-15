@@ -22,6 +22,16 @@ class Api {
       method: 'GET',
     }).then((res) => res.data);
   }
+
+  postOrder(ingredients) {
+    return this.#request(`${this.url}/orders`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ ingredients: ingredients }),
+    }).then((res) => res);
+  }
 }
 
 const api = new Api(URL_BASE);

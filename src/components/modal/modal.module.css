@@ -35,6 +35,10 @@
   border: none;
 }
 
+.closeButton:hover {
+  cursor: pointer;
+}
+
 .contentContainer {
   max-width: 520px;
   display: flex;

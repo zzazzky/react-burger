@@ -1,0 +1,16 @@
+.itemContainer {
+  display: flex;
+  align-items: center;
+  opacity: 1;
+}
+
+.itemContainer svg {
+  margin-right: 8px;
+  width: 26px;
+}
+
+.itemContainerHover {
+  composes: itemContainer;
+  border-top: 2px solid #8585ad;
+  padding-top: 16px;
+}

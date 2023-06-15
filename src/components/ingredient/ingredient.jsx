@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useDrag } from 'react-dnd';
 import dataPropTypes from '../../utils/dataPropsType';
 import {
   CurrencyIcon,
@@ -6,35 +7,47 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import ingredientStyles from './ingredient.module.css';
 
-function Ingredient(props) {
+function Ingredient({ ingredient, count, onClick }) {
   function handleIngredientClick() {
-    props.onClick(props.ingredient);
+    onClick(ingredient);
   }
+
+  const [{ isDrag }, dragRef] = useDrag({
+    type: 'ingredient',
+    item: ingredient,
+    collect: (monitor) => ({
+      isDrag: monitor.isDragging(),
+    }),
+  });
 
   return (
     <div
-      className={`${ingredientStyles.container} pb-6`}
-      onClick={handleIngredientClick}>
-      {
-        //счетчик захардкоржен для сдачи верстки, т.к. не реализовано добавление ингредиентов в конструктор
+      className={
+        isDrag
+          ? `${ingredientStyles.containerDragging} pb-6`
+          : `${ingredientStyles.container} pb-6`
       }
-      <Counter
-        count={1}
-        size='default'
-        extraClass='m-1'
-      />
+      onClick={handleIngredientClick}
+      ref={dragRef}>
+      {count > 0 && (
+        <Counter
+          count={count}
+          size='default'
+          extraClass='m-1'
+        />
+      )}
       <img
         className={ingredientStyles.image}
-        alt={props.ingredient.name}
-        src={props.ingredient.image}
+        alt={ingredient.name}
+        src={ingredient.image}
       />
       <div className={ingredientStyles.price}>
         <p className='text text_type_digits-default mt-1 mb-1 mr-2'>
-          {props.ingredient.price}
+          {ingredient.price}
         </p>
         <CurrencyIcon type='primary' />
       </div>
-      <p className='text text_type_main-default'>{props.ingredient.name}</p>
+      <p className='text text_type_main-default'>{ingredient.name}</p>
     </div>
   );
 }

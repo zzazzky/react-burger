@@ -1,33 +1,88 @@
-import { useMemo, useCallback } from 'react';
-import PropTypes from 'prop-types';
-import dataPropTypes from '../../utils/dataPropsType';
+import { useCallback, createRef, useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import burgerIngridientStyles from './burger-ingredients.module.css';
-import { useState } from 'react';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import Ingredient from '../ingredient/ingredient';
 import IngredientsCategory from '../ingredients-category/ingredients-category';
 import Modal from '../modal/modal';
+import {
+  SET_CURRENT_INGREDIENT,
+  DELETE_CURRENT_INGREDIENT,
+} from '../../services/actions/ingredients';
 
-function BurgerIngredients(props) {
-  const [ingredientDetailsIsOpen, setIngredientDetailsIsOpen] = useState(false);
-  const [currentIngredient, setCurrentIngredient] = useState(null);
+function BurgerIngredients() {
+  const dispatch = useDispatch();
 
-  const { buns, mains, sauce } = useMemo(() => {
-    return {
-      buns: props.data.filter((item) => item.type === 'bun'),
-      mains: props.data.filter((item) => item.type === 'main'),
-      sauce: props.data.filter((item) => item.type === 'sauce'),
-    };
-  }, [props.data]);
+  const [currentTab, setCurrentTab] = useState('buns');
+
+  const bunsRef = createRef();
+  const saucesRef = createRef();
+  const mainsRef = createRef();
+  const containerRef = createRef();
+  const [containerRefTop, setContainerRefTop] = useState(null);
+
+  useEffect(() => {
+    setContainerRefTop(containerRef.current.getBoundingClientRect().top);
+  }, []);
+
+  const buns = useSelector((store) => store.ingredients.buns);
+
+  const mains = useSelector((store) => store.ingredients.mains);
+
+  const sauces = useSelector((store) => store.ingredients.sauces);
+
+  const constructorBun = useSelector((store) => store.constructor.bun);
+
+  const constructorIngredients = useSelector(
+    (store) => store.constructor.ingredients
+  );
+
+  const currentIngredient = useSelector(
+    (store) => store.ingredients.currentIngredient
+  );
+
+  const handleIngredientContainerScroll = () => {
+    if (
+      Math.abs(bunsRef.current.getBoundingClientRect().top - containerRefTop) <
+        Math.abs(
+          saucesRef.current.getBoundingClientRect().top - containerRefTop
+        ) &&
+      Math.abs(bunsRef.current.getBoundingClientRect().top - containerRefTop) <
+        Math.abs(mainsRef.current.getBoundingClientRect().top - containerRefTop)
+    ) {
+      setCurrentTab('buns');
+    } else if (
+      Math.abs(
+        saucesRef.current.getBoundingClientRect().top - containerRefTop
+      ) <
+        Math.abs(
+          bunsRef.current.getBoundingClientRect().top - containerRefTop
+        ) &&
+      Math.abs(
+        saucesRef.current.getBoundingClientRect().top - containerRefTop
+      ) <
+        Math.abs(mainsRef.current.getBoundingClientRect().top - containerRefTop)
+    ) {
+      setCurrentTab('sauces');
+    } else {
+      setCurrentTab('mains');
+    }
+  };
 
   const handleIngredientClick = useCallback((ingredient) => {
-    setCurrentIngredient(ingredient);
-    setIngredientDetailsIsOpen(true);
+    dispatch({
+      type: SET_CURRENT_INGREDIENT,
+      payload: {
+        ingredient: ingredient,
+      },
+    });
   }, []);
 
   const closeIngredientDetails = useCallback(() => {
-    setIngredientDetailsIsOpen(false);
+    dispatch({
+      type: DELETE_CURRENT_INGREDIENT,
+    });
   }, []);
 
   return (
@@ -38,27 +93,42 @@ function BurgerIngredients(props) {
       <div className={burgerIngridientStyles.ingredientsMenu}>
         <Tab
           value='Булки'
-          active={true}>
+          active={currentTab === 'buns'}
+          onClick={() =>
+            bunsRef.current.scrollIntoView({ behavior: 'smooth' })
+          }>
           Булки
         </Tab>
         <Tab
           value='Соусы'
-          active={false}>
+          active={currentTab === 'sauces'}
+          onClick={() =>
+            saucesRef.current.scrollIntoView({ behavior: 'smooth' })
+          }>
           Соусы
         </Tab>
         <Tab
           value='Начинки'
-          active={false}>
+          active={currentTab === 'mains'}
+          onClick={() =>
+            mainsRef.current.scrollIntoView({ behavior: 'smooth' })
+          }>
           Начинки
         </Tab>
       </div>
-      <div className={burgerIngridientStyles.allIngridients}>
-        <IngredientsCategory text='Булки'>
-          {buns.map((filteredItem) => {
+      <div
+        className={burgerIngridientStyles.allIngridients}
+        ref={containerRef}
+        onScroll={handleIngredientContainerScroll}>
+        <IngredientsCategory
+          text='Булки'
+          ref={bunsRef}>
+          {buns?.map((filteredItem) => {
             return (
-              <li key={filteredItem._id}>
+              <li key={filteredItem?._id}>
                 {' '}
                 <Ingredient
+                  count={constructorBun?._id === filteredItem?._id && 1}
                   ingredient={filteredItem}
                   onClick={handleIngredientClick}
                 />
@@ -66,11 +136,21 @@ function BurgerIngredients(props) {
             );
           })}
         </IngredientsCategory>
-        <IngredientsCategory text='Соусы'>
-          {sauce.map((filteredItem) => {
+        <IngredientsCategory
+          text='Соусы'
+          ref={saucesRef}>
+          {sauces?.map((filteredItem) => {
             return (
-              <li key={filteredItem._id}>
+              <li key={filteredItem?._id}>
                 <Ingredient
+                  count={
+                    constructorIngredients?.find(
+                      (item) => item?._id === filteredItem?._id
+                    ) &&
+                    constructorIngredients?.filter(
+                      (item) => item?._id === filteredItem?._id
+                    ).length
+                  }
                   ingredient={filteredItem}
                   onClick={handleIngredientClick}
                 />
@@ -78,12 +158,19 @@ function BurgerIngredients(props) {
             );
           })}
         </IngredientsCategory>
-        <IngredientsCategory text='Начинки'>
-          {mains.map((filteredItem) => {
+        <IngredientsCategory
+          text='Начинки'
+          ref={mainsRef}>
+          {mains?.map((filteredItem) => {
             return (
-              <li key={filteredItem._id}>
+              <li key={filteredItem?._id}>
                 {' '}
                 <Ingredient
+                  count={
+                    constructorIngredients?.filter(
+                      (item) => item?._id === filteredItem?._id
+                    ).length
+                  }
                   ingredient={filteredItem}
                   onClick={handleIngredientClick}
                 />
@@ -92,19 +179,15 @@ function BurgerIngredients(props) {
           })}
         </IngredientsCategory>
       </div>
-      {ingredientDetailsIsOpen && (
+      {currentIngredient && (
         <Modal
           onClose={closeIngredientDetails}
-          title='Детали ингридиента'>
-          <IngredientDetails ingredient={currentIngredient} />
+          title='Детали ингредиента'>
+          <IngredientDetails />
         </Modal>
       )}
     </section>
   );
 }
-
-BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(dataPropTypes.isRequired).isRequired,
-};
 
 export default BurgerIngredients;
