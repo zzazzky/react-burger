@@ -1,5 +1,6 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { useDrop } from 'react-dnd';
 import burgerConstructorStyles from './burger-constructor.module.css';
 import OrderDetails from '../order-details/order-details';
@@ -14,8 +15,10 @@ import { sendOrder } from '../../services/actions/order';
 import { ADD_CONSTRUCTOR_INGREDIENT } from '../../services/actions/constructor';
 function BurgerConstructor() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [orderDetailsIsOpen, setOrderDetailsIsOpen] = useState(false);
+  const isLoggedIn = useSelector((store) => store.profile.user.isLoggedIn);
   const currentBun = useSelector((store) => store.constructor.bun);
 
   const currentIngredients = useSelector(
@@ -40,9 +43,13 @@ function BurgerConstructor() {
   };
 
   const handleOrderButtonClick = useCallback(() => {
-    setOrderDetailsIsOpen(true);
-    dispatch(sendOrder([currentBun, ...currentIngredients]));
-  }, [currentBun, currentIngredients]);
+    if (isLoggedIn) {
+      setOrderDetailsIsOpen(true);
+      dispatch(sendOrder([currentBun, ...currentIngredients]));
+    } else {
+      navigate('/login');
+    }
+  }, [currentBun, currentIngredients, isLoggedIn]);
 
   const closeOrderDetails = useCallback(() => {
     setOrderDetailsIsOpen(false);

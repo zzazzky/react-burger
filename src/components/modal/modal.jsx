@@ -23,14 +23,11 @@ function Modal(props) {
   return createPortal(
     <section className={modalStyles.modal}>
       <div className={`${modalStyles.container} p-10`}>
-        <div className={modalStyles.titleContainer}>
-          <h2 className='text text_type_main-large'>{props.title}</h2>
-          <button
-            className={`${modalStyles.closeButton} mt-5 mb-5`}
-            onClick={props.onClose}>
-            <CloseIcon type='primary' />
-          </button>
-        </div>
+        <button
+          className={`${modalStyles.closeButton} mt-5 mb-5`}
+          onClick={props.onClose}>
+          <CloseIcon type='primary' />
+        </button>
         <div className={modalStyles.contentContainer}>{props.children}</div>
       </div>
       <ModalOverlay onClose={props.onClose} />
@@ -40,7 +37,6 @@ function Modal(props) {
 }
 
 Modal.propTypes = {
-  title: PropTypes.string,
   onClose: PropTypes.func.isRequired,
   children: PropTypes.element.isRequired,
 };

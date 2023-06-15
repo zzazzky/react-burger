@@ -4,6 +4,7 @@ const ingredientsInitialState = {
   mains: null,
   ingredientsRequest: false,
   ingredientsFeedFailed: false,
+  ingredientsFeedSuccess: false,
   currentIngredient: null,
 };
 
@@ -27,6 +28,7 @@ const ingredients = (state = ingredientsInitialState, action) => {
         ...state,
         ingredientsRequest: false,
         ingredientsFeedFailed: false,
+        ingredientsFeedSuccess: true,
       };
 
     case 'SET_INGREDIENTS':
@@ -34,6 +36,7 @@ const ingredients = (state = ingredientsInitialState, action) => {
         ...state,
         ingredientsRequest: false,
         ingredientsFeedFailed: false,
+
         buns: action.payload.ingredients.filter((item) => item.type === 'bun'),
         sauces: action.payload.ingredients.filter(
           (item) => item.type === 'sauce'
@@ -45,7 +48,10 @@ const ingredients = (state = ingredientsInitialState, action) => {
     case 'SET_CURRENT_INGREDIENT':
       return {
         ...state,
-        currentIngredient: action.payload.ingredient,
+        currentIngredient:
+          state.buns.find((item) => item._id === action.payload.ingredient) ||
+          state.sauces.find((item) => item._id === action.payload.ingredient) ||
+          state.mains.find((item) => item._id === action.payload.ingredient),
       };
     case 'DELETE_CURRENT_INGREDIENT':
       return {

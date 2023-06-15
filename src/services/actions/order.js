@@ -1,4 +1,5 @@
 import api from '../../utils/api';
+import { refreshToken } from './user';
 
 const GET_ORDER_FEED = 'GET_ORDER_FEED';
 
@@ -22,11 +23,12 @@ const sendOrder = (ingredients) => {
           },
         })
       )
-      .catch(() =>
+      .catch(() => {
+        dispatch(refreshToken(sendOrder, ingredients));
         dispatch({
           type: GET_ORDER_FEED_FAILED,
-        })
-      );
+        });
+      });
   };
 };
 

@@ -6,6 +6,7 @@ import {
   Counter,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import ingredientStyles from './ingredient.module.css';
+import { Link, useLocation } from 'react-router-dom';
 
 function Ingredient({ ingredient, count, onClick }) {
   function handleIngredientClick() {
@@ -20,8 +21,12 @@ function Ingredient({ ingredient, count, onClick }) {
     }),
   });
 
+  const location = useLocation();
+
   return (
-    <div
+    <Link
+      to={`/ingredients/${ingredient._id}`}
+      state={{ background: location }}
       className={
         isDrag
           ? `${ingredientStyles.containerDragging} pb-6`
@@ -48,7 +53,7 @@ function Ingredient({ ingredient, count, onClick }) {
         <CurrencyIcon type='primary' />
       </div>
       <p className='text text_type_main-default'>{ingredient.name}</p>
-    </div>
+    </Link>
   );
 }
 
