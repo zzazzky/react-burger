@@ -19,7 +19,7 @@ const GET_TOKEN_SUCCESS = 'GET_TOKEN_SUCCESS';
 
 const GET_TOKEN_FAILED = 'GET_TOKEN_FAILED';
 
-const refreshToken = (previousAction, props) => {
+const refreshToken = (previousAction, props, failType) => {
   return function (dispatch) {
     dispatch({
       type: GET_TOKEN_FEED,
@@ -30,6 +30,7 @@ const refreshToken = (previousAction, props) => {
         if (res.accessToken.startsWith('Bearer ')) {
           cookie.setCookie('accessToken', res.accessToken.slice(7), {
             expires: 1200,
+            path: '/',
           });
           localStorage.setItem('token', res.refreshToken);
           dispatch({
@@ -41,6 +42,9 @@ const refreshToken = (previousAction, props) => {
       .catch(() => {
         dispatch({
           type: GET_TOKEN_FAILED,
+        });
+        dispatch({
+          type: failType,
         });
       });
   };
@@ -62,11 +66,14 @@ const getUserInfo = () => {
           },
         });
       })
-      .catch(() => {
-        dispatch(refreshToken(getUserInfo));
-        dispatch({
-          type: GET_USER_INFO_FEED_FAILED,
-        });
+      .catch((err) => {
+        if (err === 403) {
+          dispatch(refreshToken(getUserInfo, null, GET_USER_INFO_FEED_FAILED));
+        } else {
+          dispatch({
+            type: GET_USER_INFO_FEED_FAILED,
+          });
+        }
       });
   };
 };
@@ -87,11 +94,20 @@ const changeUserInfo = ({ email, name, password }) => {
           },
         });
       })
-      .catch(() => {
-        dispatch({
-          type: CHANGE_USER_INFO_FEED_FAILED,
-        });
-        dispatch(refreshToken(changeUserInfo, { email, name, password }));
+      .catch((err) => {
+        if (err === 403) {
+          dispatch(
+            refreshToken(
+              changeUserInfo,
+              { email, name, password },
+              CHANGE_USER_INFO_FEED_FAILED
+            )
+          );
+        } else {
+          dispatch({
+            type: CHANGE_USER_INFO_FEED_FAILED,
+          });
+        }
       });
   };
 };

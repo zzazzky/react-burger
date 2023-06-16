@@ -8,7 +8,7 @@ function ProtectedRouteElement({ element }) {
   const isUserLoading = useSelector(
     (store) =>
       !store.profile.userInfoRequest.isUserInfoRequestSuccess &&
-      !store.profile.tokenRequest.isTokenRequestFailed
+      !store.profile.userInfoRequest.isUserInfoRequestFailed
   );
 
   if (isUserLoading) {

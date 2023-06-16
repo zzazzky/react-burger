@@ -23,11 +23,14 @@ const sendOrder = (ingredients) => {
           },
         })
       )
-      .catch(() => {
-        dispatch(refreshToken(sendOrder, ingredients));
-        dispatch({
-          type: GET_ORDER_FEED_FAILED,
-        });
+      .catch((err) => {
+        if (err === 403) {
+          dispatch(refreshToken(sendOrder, ingredients, GET_ORDER_FEED_FAILED));
+        } else {
+          dispatch({
+            type: GET_ORDER_FEED_FAILED,
+          });
+        }
       });
   };
 };

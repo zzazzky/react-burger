@@ -15,21 +15,15 @@ function OrderDetails() {
 
   const orderFeedFailed = useSelector((store) => store.order.orderFeedFailed);
 
-  const isTokenRequestFailed = useSelector(
-    (store) => store.profile.tokenRequest.isTokenRequestFailed
+  const replacementText = !orderFeedFailed
+    ? 'Отправляем заказ'
+    : 'Упс, что-то пошло не так! Попробуйте еще раз';
+
+  const replacementPicture = !orderFeedFailed ? (
+    <BurgerIcon type='primary' />
+  ) : (
+    <CloseIcon type='primary' />
   );
-
-  const replacementText =
-    !isTokenRequestFailed || !orderFeedFailed
-      ? 'Отправляем заказ'
-      : 'Упс, что-то пошло не так! Попробуйте еще раз';
-
-  const replacementPicture =
-    !isTokenRequestFailed || !orderFeedFailed ? (
-      <BurgerIcon type='primary' />
-    ) : (
-      <CloseIcon type='primary' />
-    );
 
   return !orderRequest && orderFeedSuccess ? (
     <>

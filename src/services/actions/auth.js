@@ -18,6 +18,7 @@ const register = ({ name, email, password }) => {
         if (res.accessToken.startsWith('Bearer ')) {
           cookie.setCookie('accessToken', res.accessToken.slice(7), {
             expires: 1200,
+            path: '/',
           });
           localStorage.setItem('token', res.refreshToken);
           dispatch({
@@ -48,6 +49,7 @@ const login = ({ email, password }) => {
         if (res.accessToken.startsWith('Bearer ')) {
           cookie.setCookie('accessToken', res.accessToken.slice(7), {
             expires: 1200,
+            path: '/',
           });
           localStorage.setItem('token', res.refreshToken);
           dispatch({

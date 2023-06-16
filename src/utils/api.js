@@ -33,40 +33,52 @@ class Api {
         },
       }).then((res) => res);
     } else {
-      return Promise.reject();
+      return Promise.reject(403);
     }
   }
 
   refreshToken() {
-    return this.#request(`${this.url}/auth/token`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ token: localStorage.getItem('token') }),
-    }).then((res) => res);
+    if (localStorage.getItem('token')) {
+      return this.#request(`${this.url}/auth/token`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token: localStorage.getItem('token') }),
+      }).then((res) => res);
+    } else {
+      return Promise.reject(401);
+    }
   }
 
   changeProfileInfo({ email, name, password }) {
-    return this.#request(`${this.url}/auth/user`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + cookie.getCookie('accessToken'),
-      },
-      body: JSON.stringify({ email, name, password }),
-    }).then((res) => res);
+    if (cookie.getCookie('accessToken')) {
+      return this.#request(`${this.url}/auth/user`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + cookie.getCookie('accessToken'),
+        },
+        body: JSON.stringify({ email, name, password }),
+      }).then((res) => res);
+    } else {
+      return Promise.reject(403);
+    }
   }
 
   postOrder(ingredients) {
-    return this.#request(`${this.url}/orders`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + cookie.getCookie('accessToken'),
-      },
-      body: JSON.stringify({ ingredients: ingredients }),
-    }).then((res) => res);
+    if (cookie.getCookie('accessToken')) {
+      return this.#request(`${this.url}/orders`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + cookie.getCookie('accessToken'),
+        },
+        body: JSON.stringify({ ingredients: ingredients }),
+      }).then((res) => res);
+    } else {
+      return Promise.reject(403);
+    }
   }
 
   setResetCode(email) {

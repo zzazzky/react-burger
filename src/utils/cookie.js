@@ -34,7 +34,7 @@ class Cookie {
   }
 
   deleteCookie(name) {
-    this.setCookie(name, null, { expires: -1 });
+    this.setCookie(name, null, { expires: -1, path: '/' });
   }
 }
 
