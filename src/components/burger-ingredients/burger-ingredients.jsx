@@ -5,14 +5,12 @@ import IngredientDetails from '../ingredient-details/ingredient-details';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import Ingredient from '../ingredient/ingredient';
 import IngredientsCategory from '../ingredients-category/ingredients-category';
-import Modal from '../modal/modal';
-import {
-  SET_CURRENT_INGREDIENT,
-  DELETE_CURRENT_INGREDIENT,
-} from '../../services/actions/ingredients';
+import Modal from '../../components/modal/modal';
+import { useNavigate } from 'react-router-dom';
 
 function BurgerIngredients() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [currentTab, setCurrentTab] = useState('buns');
 
@@ -72,17 +70,18 @@ function BurgerIngredients() {
 
   const handleIngredientClick = useCallback((ingredient) => {
     dispatch({
-      type: SET_CURRENT_INGREDIENT,
+      type: 'SET_CURRENT_INGREDIENT',
       payload: {
-        ingredient: ingredient,
+        ingredient: ingredient._id,
       },
     });
   }, []);
 
   const closeIngredientDetails = useCallback(() => {
     dispatch({
-      type: DELETE_CURRENT_INGREDIENT,
+      type: 'DELETE_CURRENT_INGREDIENT',
     });
+    navigate('/');
   }, []);
 
   return (
@@ -178,14 +177,12 @@ function BurgerIngredients() {
             );
           })}
         </IngredientsCategory>
+        {currentIngredient && (
+          <Modal onClose={closeIngredientDetails}>
+            <IngredientDetails />
+          </Modal>
+        )}
       </div>
-      {currentIngredient && (
-        <Modal
-          onClose={closeIngredientDetails}
-          title='Детали ингредиента'>
-          <IngredientDetails />
-        </Modal>
-      )}
     </section>
   );
 }

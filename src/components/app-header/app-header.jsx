@@ -1,9 +1,12 @@
 import headerStyles from './app-header.module.css';
 import HeaderLink from '../header-link/header-link';
-import { Logo } from '@ya.praktikum/react-developer-burger-ui-components';
-import { BurgerIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { ListIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import {
+  Logo,
+  BurgerIcon,
+  ListIcon,
+  ProfileIcon,
+} from '@ya.praktikum/react-developer-burger-ui-components';
+import { NavLink } from 'react-router-dom';
 
 function AppHeader() {
   return (
@@ -17,14 +20,16 @@ function AppHeader() {
           </HeaderLink>
           <HeaderLink
             icon={ListIcon}
-            to='/'>
+            to='/orders'>
             Лента заказов
           </HeaderLink>
         </div>
-        <Logo />
+        <NavLink to='/'>
+          <Logo />
+        </NavLink>
         <HeaderLink
           icon={ProfileIcon}
-          to='/'>
+          to='/profile'>
           Личный кабинет
         </HeaderLink>
       </nav>

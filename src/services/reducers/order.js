@@ -2,6 +2,7 @@ const orderInitialState = {
   currentOrder: null,
   orderRequest: false,
   orderFeedFailed: false,
+  orderFeedSuccess: false,
 };
 
 const order = (state = orderInitialState, action) => {
@@ -17,6 +18,7 @@ const order = (state = orderInitialState, action) => {
         ...state,
         orderRequest: false,
         orderFeedFailed: true,
+        orderFeedSuccess: false,
       };
 
     case 'GET_ORDER_FEED_SUCCESS':
@@ -24,6 +26,7 @@ const order = (state = orderInitialState, action) => {
         ...state,
         orderRequest: false,
         orderFeedFailed: false,
+        orderFeedSuccess: true,
         currentOrder: {
           number: action.payload.number,
           name: action.payload.name,

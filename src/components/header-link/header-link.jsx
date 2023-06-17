@@ -1,21 +1,27 @@
+import { useLocation, NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import headerLinkStyles from './header-link.module.css';
-import { NavLink } from 'react-router-dom';
 
 function HeaderLink(props) {
-  //временное решение до реализации роутера
-  const linkClass =
-    props.children === 'Конструктор'
-      ? headerLinkStyles.link
-      : headerLinkStyles.link_unactive;
-  const IconType = props.children === 'Конструктор' ? 'primary' : 'secondary';
-  const Icon = <props.icon type={IconType} />;
+  const location = useLocation();
+  const IconType =
+    props.to === '/'
+      ? location.pathname === '/'
+        ? 'primary'
+        : 'secondary'
+      : location.pathname.startsWith(props.to)
+      ? 'primary'
+      : 'secondary';
 
   return (
     <NavLink
       to={props.to}
-      className={`${linkClass} pl-5 pr-5 pb-4 pt-4`}>
-      {Icon}
+      className={({ isActive }) =>
+        isActive
+          ? `${headerLinkStyles.link} pl-5 pr-5 pb-4 pt-4`
+          : `${headerLinkStyles.link_unactive} pl-5 pr-5 pb-4 pt-4`
+      }>
+      <props.icon type={IconType} />
       <p className='pl-2 text text_type_main-default'>{props.children}</p>
     </NavLink>
   );

@@ -22,17 +22,13 @@
   justify-content: flex-start;
 }
 
-.titleContainer {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-}
-
 .closeButton {
   background-color: transparent;
   border: none;
+  align-self: flex-end;
+  position: absolute;
+  right: 40px;
+  top: 40px;
 }
 
 .closeButton:hover {
