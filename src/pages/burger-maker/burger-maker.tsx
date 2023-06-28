@@ -1,20 +1,22 @@
+import React from 'react';
 import { useSelector } from 'react-redux';
 import burgerMakerStyles from './burger-maker.module.css';
 import BurgerConstructor from '../../components/burger-constructor/burger-constructor';
 import BurgerIngredients from '../../components/burger-ingredients/burger-ingredients';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { Istore } from '../../types/store-interface';
 
-function BurgerMaker() {
-  const ingredientsRequest = useSelector(
+const BurgerMaker: React.FC = () => {
+  const ingredientsRequest = useSelector<Istore, boolean>(
     (store) => store.ingredients.ingredientsRequest
   );
 
-  const ingredientsFeedFailed = useSelector(
+  const ingredientsFeedFailed = useSelector<Istore, boolean>(
     (store) => store.ingredients.ingredientsFeedFailed
   );
 
-  const replacementText = !ingredientsFeedFailed
+  const replacementText: string = !ingredientsFeedFailed
     ? 'Ваши бургеры летят к вам с края Вселенной'
     : 'Упс, что-то пошло не так и ваши бургеры улетели в соседнюю галактику! Попробуйте перезагрузить страницу, вдруг они уже прилетели';
 
@@ -36,6 +38,6 @@ function BurgerMaker() {
       </section>
     );
   }
-}
+};
 
 export default BurgerMaker;

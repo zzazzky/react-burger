@@ -1,8 +1,16 @@
-import PropTypes from 'prop-types';
+import React, { RefObject } from 'react';
 import { forwardRef } from 'react';
 import IngridientsCategoryStyles from './ingredients-category.module.css';
 
-const IngredientsCategory = forwardRef((props, ref) => {
+interface IIngredientsCategoryProps {
+  text: string;
+  children: React.ReactNode;
+}
+
+const IngredientsCategory = forwardRef<
+  HTMLDivElement,
+  IIngredientsCategoryProps
+>((props, ref) => {
   return (
     <>
       <h3
@@ -17,9 +25,5 @@ const IngredientsCategory = forwardRef((props, ref) => {
     </>
   );
 });
-
-IngredientsCategory.propTypes = {
-  text: PropTypes.string.isRequired,
-};
 
 export default IngredientsCategory;

@@ -1,11 +1,22 @@
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate, useLocation } from 'react-router-dom';
+import { Istore } from '../../types/store-interface';
 
-function ProtectedRouteElement({ element }) {
-  const isLoggedIn = useSelector((store) => store.profile.user.isLoggedIn);
+interface IProtectedRouteElementProps {
+  element: React.ReactElement;
+}
+
+const ProtectedRouteElement: React.FC<IProtectedRouteElementProps> = ({
+  element,
+}) => {
   const location = useLocation();
 
-  const isUserLoading = useSelector(
+  const isLoggedIn = useSelector<Istore, boolean>(
+    (store) => store.profile.user.isLoggedIn
+  );
+
+  const isUserLoading = useSelector<Istore, boolean>(
     (store) =>
       !store.profile.userInfoRequest.isUserInfoRequestSuccess &&
       !store.profile.userInfoRequest.isUserInfoRequestFailed
@@ -23,5 +34,5 @@ function ProtectedRouteElement({ element }) {
       />
     );
   }
-}
+};
 export default ProtectedRouteElement;

@@ -1,15 +1,25 @@
-import PropTypes from 'prop-types';
+import React from 'react';
 import { useDrag } from 'react-dnd';
-import dataPropTypes from '../../utils/dataPropsType';
 import {
   CurrencyIcon,
   Counter,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import ingredientStyles from './ingredient.module.css';
 import { Link, useLocation } from 'react-router-dom';
+import { IIngredient } from '../../types/store-interface';
 
-function Ingredient({ ingredient, count, onClick }) {
-  function handleIngredientClick() {
+interface IIngredientProps {
+  ingredient: IIngredient;
+  onClick: (ingredient: IIngredient) => void;
+  count: number | null;
+}
+
+const Ingredient: React.FC<IIngredientProps> = ({
+  ingredient,
+  count,
+  onClick,
+}) => {
+  function handleIngredientClick(): void {
     onClick(ingredient);
   }
 
@@ -34,7 +44,7 @@ function Ingredient({ ingredient, count, onClick }) {
       }
       onClick={handleIngredientClick}
       ref={dragRef}>
-      {count > 0 && (
+      {count && count > 0 && (
         <Counter
           count={count}
           size='default'
@@ -55,11 +65,6 @@ function Ingredient({ ingredient, count, onClick }) {
       <p className='text text_type_main-default'>{ingredient.name}</p>
     </Link>
   );
-}
-
-Ingredient.propTypes = {
-  ingredient: dataPropTypes.isRequired,
-  onClick: PropTypes.func.isRequired,
 };
 
 export default Ingredient;

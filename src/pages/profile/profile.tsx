@@ -1,3 +1,4 @@
+import React from 'react';
 import profileStyles from './profile.module.css';
 import { useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,42 +8,52 @@ import {
   Input,
   Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-
 import { changeUserInfo } from '../../services/actions/user';
-
 import ProfileMenu from '../../components/profile-menu/profile-menu';
+import { TypedDispatch } from '../../types/thunk-dispatch-types';
+import { Istore } from '../../types/store-interface';
 
-function Profile() {
-  const inputRef = useRef(null);
-  const dispatch = useDispatch();
+const Profile: React.FC = () => {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const dispatch = useDispatch<TypedDispatch>();
 
-  const initialEmail = useSelector((store) => store.profile.user.email);
-  const initialName = useSelector((store) => store.profile.user.name);
+  const initialEmail = useSelector<Istore, string | null>(
+    (store) => store.profile.user.email
+  );
+  const initialName = useSelector<Istore, string | null>(
+    (store) => store.profile.user.name
+  );
 
-  const [isEdit, setIsEdit] = useState(false);
-  const [form, setForm] = useState({
-    name: initialName,
-    email: initialEmail,
+  const [isEdit, setIsEdit] = useState<boolean>(false);
+
+  const [form, setForm] = useState<{
+    name: string;
+    email: string;
+    password: string;
+  }>({
+    name: initialName !== null ? initialName : '',
+    email: initialEmail !== null ? initialEmail : '',
     password: '',
   });
-  const onFormChange = (e) => {
+
+  const onFormChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setForm({ ...form, [e.target.name]: e.target.value });
     setIsEdit(true);
   };
 
-  const [nameIsAble, setNameIsAble] = useState(true);
+  const [nameIsAble, setNameIsAble] = useState<boolean>(true);
 
-  function handleEditFormSubmit(e) {
+  function handleEditFormSubmit(e: React.FormEvent<HTMLFormElement>): void {
     e.preventDefault();
     dispatch(changeUserInfo(form));
     setIsEdit(false);
   }
 
-  function handleResetForm(e) {
+  function handleResetForm(e: React.SyntheticEvent<Element, Event>): void {
     e.preventDefault();
     setForm({
-      name: initialName,
-      email: initialEmail,
+      name: initialName !== null ? initialName : '',
+      email: initialEmail !== null ? initialEmail : '',
       password: '',
     });
     setIsEdit(false);
@@ -74,7 +85,11 @@ function Profile() {
             disabled={nameIsAble}
             ref={inputRef}
             onIconClick={() => {
-              setTimeout(() => inputRef.current.focus(), 0);
+              setTimeout(() => {
+                if (inputRef.current !== null) {
+                  inputRef.current.focus();
+                }
+              }, 0);
               setNameIsAble(false);
             }}
             onBlur={() => {
@@ -127,6 +142,6 @@ function Profile() {
       </section>
     </div>
   );
-}
+};
 
 export default Profile;

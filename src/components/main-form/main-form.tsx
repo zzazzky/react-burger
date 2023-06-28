@@ -1,8 +1,17 @@
+import React from 'react';
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import mainFormStyles from './main-form.module.css';
-import PropTypes from 'prop-types';
 
-function MainForm(props) {
+interface IMainFormProps {
+  children: React.ReactNode;
+  button: string;
+  title: string;
+  onSubmit: React.FormEventHandler<HTMLFormElement>;
+  underText: React.ReactNode;
+  disabled: boolean;
+}
+
+const MainForm: React.FC<IMainFormProps> = (props) => {
   return (
     <main className={mainFormStyles.container}>
       <h1 className='text text_type_main-medium'>{props.title}</h1>
@@ -21,15 +30,6 @@ function MainForm(props) {
       {props.underText}
     </main>
   );
-}
-
-MainForm.propTypes = {
-  children: PropTypes.node.isRequired,
-  button: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  onSubmit: PropTypes.func.isRequired,
-  underText: PropTypes.node.isRequired,
-  disabled: PropTypes.bool.isRequired,
 };
 
 export default MainForm;

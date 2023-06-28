@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -13,27 +14,34 @@ import {
 import Modal from '../modal/modal';
 import { sendOrder } from '../../services/actions/order';
 import { ADD_CONSTRUCTOR_INGREDIENT } from '../../services/actions/constructor';
-function BurgerConstructor() {
-  const dispatch = useDispatch();
+import { TypedDispatch } from '../../types/thunk-dispatch-types';
+import { IIngredient, Istore } from '../../types/store-interface';
+
+const BurgerConstructor: React.FC = () => {
+  const dispatch = useDispatch<TypedDispatch>();
   const navigate = useNavigate();
 
-  const [orderDetailsIsOpen, setOrderDetailsIsOpen] = useState(false);
-  const isLoggedIn = useSelector((store) => store.profile.user.isLoggedIn);
-  const currentBun = useSelector((store) => store.constructor.bun);
+  const [orderDetailsIsOpen, setOrderDetailsIsOpen] = useState<boolean>(false);
+  const isLoggedIn = useSelector<Istore, boolean>(
+    (store) => store.profile.user.isLoggedIn
+  );
+  const currentBun = useSelector<Istore, IIngredient | null>(
+    (store) => store.constructor.bun
+  );
 
-  const currentIngredients = useSelector(
+  const currentIngredients = useSelector<Istore, Array<IIngredient> | null>(
     (store) => store.constructor.ingredients
   );
 
-  const sum = useSelector((store) => store.constructor.sum);
+  const sum = useSelector<Istore, number>((store) => store.constructor.sum);
   const [, ingredientDropTarget] = useDrop({
     accept: 'ingredient',
-    drop(ingredient) {
+    drop(ingredient: IIngredient) {
       handleIngredientDrop(ingredient);
     },
   });
 
-  const handleIngredientDrop = (ingredient) => {
+  const handleIngredientDrop = (ingredient: IIngredient) => {
     dispatch({
       type: ADD_CONSTRUCTOR_INGREDIENT,
       payload: {
@@ -45,7 +53,9 @@ function BurgerConstructor() {
   const handleOrderButtonClick = useCallback(() => {
     if (isLoggedIn) {
       setOrderDetailsIsOpen(true);
-      dispatch(sendOrder([currentBun, ...currentIngredients]));
+      currentBun !== null &&
+        currentIngredients !== null &&
+        dispatch(sendOrder([currentBun, ...currentIngredients]));
     } else {
       navigate('/login');
     }
@@ -55,7 +65,7 @@ function BurgerConstructor() {
     setOrderDetailsIsOpen(false);
   }, []);
 
-  return (
+  return currentBun !== null && currentIngredients !== null ? (
     <section className={`${burgerConstructorStyles.section} pt-15 pl-4`}>
       <div
         className={`${burgerConstructorStyles.container} mb-10`}
@@ -111,7 +121,7 @@ function BurgerConstructor() {
         </Modal>
       )}
     </section>
-  );
-}
+  ) : null;
+};
 
 export default BurgerConstructor;

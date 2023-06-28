@@ -1,8 +1,9 @@
+import React from 'react';
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import notFoundStyles from './not-found.module.css';
 import { useNavigate } from 'react-router-dom';
 
-function NotFound() {
+const NotFound: React.FC = () => {
   const navigate = useNavigate();
 
   return (
@@ -13,11 +14,11 @@ function NotFound() {
         htmlType='button'
         type='primary'
         size='medium'
-        onClick={() => navigate(-1, { replace: true })}>
+        onClick={() => navigate(-1)}>
         Вернуться
       </Button>
     </div>
   );
-}
+};
 
 export default NotFound;

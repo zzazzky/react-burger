@@ -1,8 +1,8 @@
+import React from 'react';
 import orderHistoryStyles from './order-history.module.css';
-
 import ProfileMenu from '../../components/profile-menu/profile-menu';
 
-function OrderHistory() {
+const OrderHistory: React.FC = () => {
   return (
     <main className={orderHistoryStyles.container}>
       <section>
@@ -11,6 +11,6 @@ function OrderHistory() {
       <section></section>
     </main>
   );
-}
+};
 
 export default OrderHistory;
