@@ -1,5 +1,4 @@
 import cookie from './cookie';
-import { IIngredient } from '../types/store-interface';
 const URL_BASE: string = 'https://norma.nomoreparties.space/api';
 
 interface IApi {
@@ -12,7 +11,7 @@ interface IApi {
     name: string;
     password: string;
   }) => Promise<Response>;
-  postOrder: (ingredients: Array<IIngredient>) => Promise<Response>;
+  postOrder: (ingredients: Array<string>) => Promise<Response>;
   setResetCode: (email: string) => Promise<Response>;
   resetPassword: (fw: { password: string; token: string }) => Promise<Response>;
   signup: (fw: {
@@ -38,7 +37,7 @@ class Api implements IApi {
   }
 
   private request(url: string, options: {}) {
-    return fetch(url, options).then((res: Response) => this.checkRes(res));
+    return fetch(url, options).then((res) => this.checkRes(res));
   }
 
   getIngredients() {
@@ -54,7 +53,7 @@ class Api implements IApi {
         headers: {
           Authorization: 'Bearer ' + cookie.getCookie('accessToken'),
         },
-      }).then((res: Response) => res);
+      }).then((res) => res);
     } else {
       return Promise.reject(403);
     }
@@ -68,7 +67,7 @@ class Api implements IApi {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ token: localStorage.getItem('token') }),
-      }).then((res: Response) => res);
+      }).then((res) => res);
     } else {
       return Promise.reject(401);
     }
@@ -83,13 +82,13 @@ class Api implements IApi {
           Authorization: 'Bearer ' + cookie.getCookie('accessToken'),
         },
         body: JSON.stringify(form),
-      }).then((res: Response) => res);
+      }).then((res) => res);
     } else {
       return Promise.reject(403);
     }
   }
 
-  postOrder(ingredients: Array<IIngredient>) {
+  postOrder(ingredients: Array<string>) {
     if (cookie.getCookie('accessToken')) {
       return this.request(`${this.url}/orders`, {
         method: 'POST',
@@ -98,7 +97,7 @@ class Api implements IApi {
           Authorization: 'Bearer ' + cookie.getCookie('accessToken'),
         },
         body: JSON.stringify({ ingredients: ingredients }),
-      }).then((res: Response) => res);
+      }).then((res) => res);
     } else {
       return Promise.reject(403);
     }
@@ -111,7 +110,7 @@ class Api implements IApi {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ email }),
-    }).then((res: Response) => res);
+    }).then((res) => res);
   }
 
   resetPassword(form: { password: string; token: string }) {
@@ -121,7 +120,7 @@ class Api implements IApi {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ password: form.password, token: form.token }),
-    }).then((res: Response) => res);
+    }).then((res) => res);
   }
 
   signup(form: { email: string; password: string; name: string }) {
@@ -131,7 +130,7 @@ class Api implements IApi {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(form),
-    }).then((res: Response) => res);
+    }).then((res) => res);
   }
 
   login(form: { email: string; password: string }) {
@@ -141,7 +140,7 @@ class Api implements IApi {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(form),
-    }).then((res: Response) => res);
+    }).then((res) => res);
   }
 
   logout() {

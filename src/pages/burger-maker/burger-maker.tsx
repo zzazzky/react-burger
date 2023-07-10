@@ -1,18 +1,17 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../types/hooks';
 import burgerMakerStyles from './burger-maker.module.css';
 import BurgerConstructor from '../../components/burger-constructor/burger-constructor';
 import BurgerIngredients from '../../components/burger-ingredients/burger-ingredients';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { Istore } from '../../types/store-interface';
 
 const BurgerMaker: React.FC = () => {
-  const ingredientsRequest = useSelector<Istore, boolean>(
+  const ingredientsRequest = useSelector(
     (store) => store.ingredients.ingredientsRequest
   );
 
-  const ingredientsFeedFailed = useSelector<Istore, boolean>(
+  const ingredientsFeedFailed = useSelector(
     (store) => store.ingredients.ingredientsFeedFailed
   );
 

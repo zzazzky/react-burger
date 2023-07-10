@@ -1,19 +1,27 @@
-const orderInitialState = {
+import { TOrder } from '../actions/order';
+import {
+  GET_ORDER_FEED,
+  GET_ORDER_FEED_FAILED,
+  GET_ORDER_FEED_SUCCESS,
+} from '../сonstants/actions';
+import { IOrderState } from '../../types/store-interface';
+
+const orderInitialState: IOrderState = {
   currentOrder: null,
   orderRequest: false,
   orderFeedFailed: false,
   orderFeedSuccess: false,
 };
 
-const order = (state = orderInitialState, action) => {
+const order = (state = orderInitialState, action: TOrder): IOrderState => {
   switch (action.type) {
-    case 'GET_ORDER_FEED':
+    case GET_ORDER_FEED:
       return {
         ...state,
         orderRequest: true,
       };
 
-    case 'GET_ORDER_FEED_FAILED':
+    case GET_ORDER_FEED_FAILED:
       return {
         ...state,
         orderRequest: false,
@@ -21,7 +29,7 @@ const order = (state = orderInitialState, action) => {
         orderFeedSuccess: false,
       };
 
-    case 'GET_ORDER_FEED_SUCCESS':
+    case GET_ORDER_FEED_SUCCESS:
       return {
         ...state,
         orderRequest: false,

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../../types/hooks';
 import { useNavigate } from 'react-router-dom';
 import { useDrop } from 'react-dnd';
 import burgerConstructorStyles from './burger-constructor.module.css';
@@ -13,27 +13,22 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
 import { sendOrder } from '../../services/actions/order';
-import { ADD_CONSTRUCTOR_INGREDIENT } from '../../services/actions/constructor';
-import { TypedDispatch } from '../../types/thunk-dispatch-types';
-import { IIngredient, Istore } from '../../types/store-interface';
+import { ADD_CONSTRUCTOR_INGREDIENT } from '../../services/сonstants/actions';
+import { IIngredient } from '../../types/store-interface';
 
 const BurgerConstructor: React.FC = () => {
-  const dispatch = useDispatch<TypedDispatch>();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [orderDetailsIsOpen, setOrderDetailsIsOpen] = useState<boolean>(false);
-  const isLoggedIn = useSelector<Istore, boolean>(
-    (store) => store.profile.user.isLoggedIn
-  );
-  const currentBun = useSelector<Istore, IIngredient | null>(
-    (store) => store.constructor.bun
-  );
+  const isLoggedIn = useSelector((store) => store.profile.user.isLoggedIn);
+  const currentBun = useSelector((store) => store.constructor.bun);
 
-  const currentIngredients = useSelector<Istore, Array<IIngredient> | null>(
+  const currentIngredients = useSelector(
     (store) => store.constructor.ingredients
   );
 
-  const sum = useSelector<Istore, number>((store) => store.constructor.sum);
+  const sum = useSelector((store) => store.constructor.sum);
   const [, ingredientDropTarget] = useDrop({
     accept: 'ingredient',
     drop(ingredient: IIngredient) {

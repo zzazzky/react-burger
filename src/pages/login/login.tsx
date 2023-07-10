@@ -1,24 +1,27 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector, useDispatch } from '../../types/hooks';
 import MainForm from '../../components/main-form/main-form';
 import {
   EmailInput,
   PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { login } from '../../services/actions/auth';
-import { TypedDispatch } from '../../types/thunk-dispatch-types';
-import { Istore } from '../../types/store-interface';
+
+type TLoginForm = {
+  email: string;
+  password: string;
+};
 
 const Login: React.FC = () => {
-  const dispatch = useDispatch<TypedDispatch>();
+  const dispatch = useDispatch();
 
-  const isError = useSelector<Istore, boolean>(
+  const isError = useSelector(
     (store) => store.profile.authRequest.isAuthRequestFailed
   );
 
-  const [form, setForm] = useState<{ email: string; password: string }>({
+  const [form, setForm] = useState<TLoginForm>({
     email: '',
     password: '',
   });

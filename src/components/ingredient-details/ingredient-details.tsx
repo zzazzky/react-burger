@@ -1,34 +1,31 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from '../../types/hooks';
 import { useEffect } from 'react';
 import ingredientDetailsStyle from './ingredient-details.module.css';
-import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { IIngredient, Istore } from '../../types/store-interface';
-
+import { SET_CURRENT_INGREDIENT } from '../../services/сonstants/actions';
 const IngredientDetails: React.FC = () => {
   const dispatch = useDispatch();
 
-  const ingredient = useParams().ingredientId;
-  const currentIngredient = useSelector<Istore, IIngredient | null>(
+  const ingredient: string | null = useParams().ingredientId || null;
+  const currentIngredient = useSelector(
     (store) => store.ingredients.currentIngredient
   );
 
-  const ingredientsFeedSuccess = useSelector<Istore, boolean>(
+  const ingredientsFeedSuccess = useSelector(
     (store) => store.ingredients.ingredientsFeedSuccess
   );
   useEffect(() => {
     if (!currentIngredient && ingredientsFeedSuccess) {
-      dispatch({
-        type: 'SET_CURRENT_INGREDIENT',
-        payload: {
-          ingredient: ingredient,
-        },
-      });
+      ingredient !== null &&
+        dispatch({
+          type: SET_CURRENT_INGREDIENT,
+          payload: {
+            ingredient: ingredient,
+          },
+        });
     }
   }, [ingredientsFeedSuccess]);
-
-  useEffect(() => {}, [ingredient]);
 
   return (
     <div className={ingredientDetailsStyle.container}>

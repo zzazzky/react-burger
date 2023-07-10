@@ -1,6 +1,6 @@
 import React from 'react';
 import { useCallback, createRef, useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../../types/hooks';
 import burgerIngridientStyles from './burger-ingredients.module.css';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -8,7 +8,11 @@ import Ingredient from '../ingredient/ingredient';
 import IngredientsCategory from '../ingredients-category/ingredients-category';
 import Modal from '../modal/modal';
 import { useNavigate } from 'react-router-dom';
-import { IIngredient, Istore } from '../../types/store-interface';
+import { IIngredient } from '../../types/store-interface';
+import {
+  SET_CURRENT_INGREDIENT,
+  DELETE_CURRENT_INGREDIENT,
+} from '../../services/сonstants/actions';
 
 const BurgerIngredients: React.FC = () => {
   const dispatch = useDispatch();
@@ -27,27 +31,19 @@ const BurgerIngredients: React.FC = () => {
       setContainerRefTop(containerRef.current.getBoundingClientRect().top);
   }, []);
 
-  const buns = useSelector<Istore, Array<IIngredient> | null>(
-    (store) => store.ingredients.buns
-  );
+  const buns = useSelector((store) => store.ingredients.buns);
 
-  const mains = useSelector<Istore, Array<IIngredient> | null>(
-    (store) => store.ingredients.mains
-  );
+  const mains = useSelector((store) => store.ingredients.mains);
 
-  const sauces = useSelector<Istore, Array<IIngredient> | null>(
-    (store) => store.ingredients.sauces
-  );
+  const sauces = useSelector((store) => store.ingredients.sauces);
 
-  const constructorBun = useSelector<Istore, IIngredient | null>(
-    (store) => store.constructor.bun
-  );
+  const constructorBun = useSelector((store) => store.constructor.bun);
 
-  const constructorIngredients = useSelector<Istore, Array<IIngredient> | null>(
+  const constructorIngredients = useSelector(
     (store) => store.constructor.ingredients
   );
 
-  const currentIngredient = useSelector<Istore, IIngredient | null>(
+  const currentIngredient = useSelector(
     (store) => store.ingredients.currentIngredient
   );
 
@@ -96,7 +92,7 @@ const BurgerIngredients: React.FC = () => {
 
   const handleIngredientClick = useCallback((ingredient: IIngredient) => {
     dispatch({
-      type: 'SET_CURRENT_INGREDIENT',
+      type: SET_CURRENT_INGREDIENT,
       payload: {
         ingredient: ingredient._id,
       },
@@ -105,7 +101,7 @@ const BurgerIngredients: React.FC = () => {
 
   const closeIngredientDetails = useCallback(() => {
     dispatch({
-      type: 'DELETE_CURRENT_INGREDIENT',
+      type: DELETE_CURRENT_INGREDIENT,
     });
     navigate('/');
   }, []);

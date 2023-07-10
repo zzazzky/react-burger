@@ -1,11 +1,11 @@
 import React from 'react';
 import draggableIngredientStyles from './constructor-draggable-ingredient.module.css';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../../types/hooks';
 import { useDrag, useDrop } from 'react-dnd';
 import {
   DELETE_CONSTRUCTOR_INGREDIENT,
   SORT_CONSTRUCTOR_INGREDIENTS,
-} from '../../services/actions/constructor';
+} from '../../services/сonstants/actions';
 import {
   DragIcon,
   ConstructorElement,

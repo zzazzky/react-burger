@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, Navigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../../types/hooks';
 import { useState } from 'react';
 import {
   PasswordInput,
@@ -8,25 +8,27 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import MainForm from '../../components/main-form/main-form';
 import { resetPassword } from '../../services/actions/reset-password';
-import { TypedDispatch } from '../../types/thunk-dispatch-types';
-import { Istore } from '../../types/store-interface';
 
+type TResetForm = {
+  password: string;
+  code: string;
+};
 const ResetPassword: React.FC = () => {
-  const dispatch = useDispatch<TypedDispatch>();
+  const dispatch = useDispatch();
 
-  const isResetSend = useSelector<Istore, boolean>(
-    (store) => store.profile.sendResetCodeRequest.isResetCodeSuccess
+  const isResetSend = useSelector(
+    (store) => store.resetPassword.sendResetCodeRequest.isResetCodeSuccess
   );
 
-  const isResetRequest = useSelector<Istore, boolean>(
-    (store) => store.profile.sendResetCodeRequest.isResetCodeRequest
+  const isResetRequest = useSelector(
+    (store) => store.resetPassword.sendResetCodeRequest.isResetCodeRequest
   );
 
-  const isError = useSelector<Istore, boolean>(
-    (store) => store.profile.resetPasswordRequest.isResetPasswordFailed
+  const isError = useSelector(
+    (store) => store.resetPassword.resetPasswordRequest.isResetPasswordFailed
   );
 
-  const [form, setForm] = useState<{ password: string; code: string }>({
+  const [form, setForm] = useState<TResetForm>({
     password: '',
     code: '',
   });

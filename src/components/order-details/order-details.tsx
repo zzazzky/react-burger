@@ -1,29 +1,20 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../types/hooks';
 import orderDetailsStyle from './order-details.module.css';
 import {
   CheckMarkIcon,
   CloseIcon,
   BurgerIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Istore } from '../../types/store-interface';
 
 const OrderDetails: React.FC = () => {
-  const orderNumber = useSelector<Istore, number | undefined>(
-    (store) => store.order.currentOrder?.number
-  );
+  const orderNumber = useSelector((store) => store.order.currentOrder?.number);
 
-  const orderRequest = useSelector<Istore, boolean>(
-    (store) => store.order.orderRequest
-  );
+  const orderRequest = useSelector((store) => store.order.orderRequest);
 
-  const orderFeedSuccess = useSelector<Istore, boolean>(
-    (store) => store.order.orderFeedSuccess
-  );
+  const orderFeedSuccess = useSelector((store) => store.order.orderFeedSuccess);
 
-  const orderFeedFailed = useSelector<Istore, boolean>(
-    (store) => store.order.orderFeedFailed
-  );
+  const orderFeedFailed = useSelector((store) => store.order.orderFeedFailed);
 
   const replacementText: string = !orderFeedFailed
     ? 'Отправляем заказ'

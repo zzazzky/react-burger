@@ -1,6 +1,5 @@
 import React from 'react';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import './app.css';
 import AppHeader from '../app-header/app-header';
@@ -17,7 +16,7 @@ import AuthRouteElement from '../auth-route-element/auth-route-element';
 import { getUserInfo } from '../../services/actions/user';
 import OrderHistory from '../../pages/order-history/order-history';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-import { TypedDispatch } from '../../types/thunk-dispatch-types';
+import { useDispatch } from '../../types/hooks';
 
 type LocationState = {
   path: string;
@@ -25,7 +24,7 @@ type LocationState = {
 };
 
 const App: React.FC = () => {
-  const dispatch = useDispatch<TypedDispatch>();
+  const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
 

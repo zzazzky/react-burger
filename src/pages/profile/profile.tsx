@@ -1,7 +1,7 @@
 import React from 'react';
 import profileStyles from './profile.module.css';
 import { useState, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector, useDispatch } from '../../types/hooks';
 import {
   EmailInput,
   PasswordInput,
@@ -10,27 +10,23 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { changeUserInfo } from '../../services/actions/user';
 import ProfileMenu from '../../components/profile-menu/profile-menu';
-import { TypedDispatch } from '../../types/thunk-dispatch-types';
-import { Istore } from '../../types/store-interface';
+
+type TProfileForm = {
+  name: string;
+  email: string;
+  password: string;
+};
 
 const Profile: React.FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const dispatch = useDispatch<TypedDispatch>();
+  const dispatch = useDispatch();
 
-  const initialEmail = useSelector<Istore, string | null>(
-    (store) => store.profile.user.email
-  );
-  const initialName = useSelector<Istore, string | null>(
-    (store) => store.profile.user.name
-  );
+  const initialEmail = useSelector((store) => store.profile.user.email);
+  const initialName = useSelector((store) => store.profile.user.name);
 
   const [isEdit, setIsEdit] = useState<boolean>(false);
 
-  const [form, setForm] = useState<{
-    name: string;
-    email: string;
-    password: string;
-  }>({
+  const [form, setForm] = useState<TProfileForm>({
     name: initialName !== null ? initialName : '',
     email: initialEmail !== null ? initialEmail : '',
     password: '',

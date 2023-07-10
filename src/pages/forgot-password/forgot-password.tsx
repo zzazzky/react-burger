@@ -4,25 +4,23 @@ import { useState } from 'react';
 import { EmailInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import MainForm from '../../components/main-form/main-form';
 import { sendResetCode } from '../../services/actions/reset-password';
-import { useSelector, useDispatch } from 'react-redux';
-import { TypedDispatch } from '../../types/thunk-dispatch-types';
-import { Istore } from '../../types/store-interface';
+import { useSelector, useDispatch } from '../../types/hooks';
 
 function ForgotPassword() {
   const navigate = useNavigate();
-  const dispatch = useDispatch<TypedDispatch>();
+  const dispatch = useDispatch();
   const [email, setEmail] = useState<string>('');
   const onEmailChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setEmail(e.target.value);
   };
 
-  const isError = useSelector<Istore, boolean>(
-    (store) => store.profile.sendResetCodeRequest.isResetCodeFailed
+  const isError = useSelector(
+    (store) => store.resetPassword.sendResetCodeRequest.isResetCodeFailed
   );
 
   function handleForgotPasswordForm(e: React.FormEvent<HTMLFormElement>): void {
     e.preventDefault();
-    dispatch(sendResetCode({ email }));
+    dispatch(sendResetCode(email));
     navigate('/reset-password');
   }
 

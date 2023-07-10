@@ -1,20 +1,40 @@
 import api from '../../utils/api';
 import cookie from '../../utils/cookie';
+import {
+  GET_AUTH_FEED,
+  GET_AUTH_FEED_FAILED,
+  GET_AUTH_FEED_SUCCESS,
+} from '../сonstants/actions';
+import { TResponse, ILogin, IRegister } from '../../types/request-interfaces';
+import { AppDispatch } from '../../types/thunk-dispatch-types';
 
-const GET_AUTH_FEED = 'GET_AUTH_FEED';
+interface IAuthFeed {
+  readonly type: typeof GET_AUTH_FEED;
+}
 
-const GET_AUTH_FEED_FAILED = 'GET_AUTH_FEED_FAILED';
+interface IAuthFeedFailed {
+  readonly type: typeof GET_AUTH_FEED_FAILED;
+}
 
-const GET_AUTH_FEED_SUCCESS = 'GET_AUTH_FEED_SUCCESS';
+interface IAuthFeedSuccess {
+  readonly type: typeof GET_AUTH_FEED_SUCCESS;
+  readonly payload: {
+    readonly name: string;
+    readonly email: string;
+  };
+}
 
-const register = ({ name, email, password }) => {
-  return function (dispatch) {
+export type TAuth = IAuthFeed | IAuthFeedFailed | IAuthFeedSuccess;
+
+export const register =
+  ({ name, email, password }: IRegister) =>
+  (dispatch: AppDispatch) => {
     dispatch({
       type: GET_AUTH_FEED,
     });
     api
       .signup({ name, email, password })
-      .then((res) => {
+      .then((res: TResponse) => {
         if (res.accessToken.startsWith('Bearer ')) {
           cookie.setCookie('accessToken', res.accessToken.slice(7), {
             expires: 1200,
@@ -36,16 +56,16 @@ const register = ({ name, email, password }) => {
         });
       });
   };
-};
 
-const login = ({ email, password }) => {
-  return function (dispatch) {
+export const login =
+  ({ email, password }: ILogin) =>
+  (dispatch: AppDispatch) => {
     dispatch({
       type: GET_AUTH_FEED,
     });
     api
       .login({ email, password })
-      .then((res) => {
+      .then((res: TResponse) => {
         if (res.accessToken.startsWith('Bearer ')) {
           cookie.setCookie('accessToken', res.accessToken.slice(7), {
             expires: 1200,
@@ -67,6 +87,3 @@ const login = ({ email, password }) => {
         });
       });
   };
-};
-
-export { register, login };

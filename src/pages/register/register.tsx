@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector, useDispatch } from '../../types/hooks';
 import {
   EmailInput,
   PasswordInput,
@@ -9,21 +9,25 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import MainForm from '../../components/main-form/main-form';
 import { register } from '../../services/actions/auth';
-import { TypedDispatch } from '../../types/thunk-dispatch-types';
-import { Istore } from '../../types/store-interface';
+
+type TRegisterForm = {
+  name: string;
+  email: string;
+  password: string;
+};
 
 const Register: React.FC = () => {
-  const dispatch = useDispatch<TypedDispatch>();
+  const dispatch = useDispatch();
 
-  const isError = useSelector<Istore, boolean>(
+  const isError = useSelector(
     (store) => store.profile.authRequest.isAuthRequestFailed
   );
 
-  const [form, setForm] = useState<{
-    name: string;
-    email: string;
-    password: string;
-  }>({ name: '', email: '', password: '' });
+  const [form, setForm] = useState<TRegisterForm>({
+    name: '',
+    email: '',
+    password: '',
+  });
 
   const onFormChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setForm({ ...form, [e.target.name]: e.target.value });

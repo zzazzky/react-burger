@@ -1,4 +1,26 @@
-const profileInitialState = {
+import {
+  GET_USER_INFO_FEED,
+  GET_USER_INFO_FEED_FAILED,
+  GET_USER_INFO_FEED_SUCCESS,
+  CHANGE_USER_INFO_FEED,
+  CHANGE_USER_INFO_FEED_FAILED,
+  CHANGE_USER_INFO_FEED_SUCCESS,
+  GET_AUTH_FEED,
+  GET_AUTH_FEED_FAILED,
+  GET_AUTH_FEED_SUCCESS,
+  GET_LOGOUT_FEED,
+  GET_LOGOUT_FEED_FAILED,
+  GET_LOGOUT_FEED_SUCCESS,
+} from '../сonstants/actions';
+
+import { IProfileState } from '../../types/store-interface';
+import { TUser } from '../actions/user';
+import { TAuth } from '../actions/auth';
+import { TLogout } from '../actions/logout';
+
+type TProfile = TUser | TAuth | TLogout;
+
+const profileInitialState: IProfileState = {
   user: {
     email: null,
     name: null,
@@ -14,21 +36,6 @@ const profileInitialState = {
     isLogoutRequestSuccess: false,
     isLogoutRequestFailed: false,
   },
-  tokenRequest: {
-    isTokenRequest: false,
-    isTokenRequestSuccess: false,
-    isTokenRequestFailed: false,
-  },
-  sendResetCodeRequest: {
-    isResetCodeRequest: false,
-    isResetCodeSuccess: false,
-    isResetCodeFailed: false,
-  },
-  resetPasswordRequest: {
-    isResetPasswordRequest: false,
-    isResetPasswordSuccess: false,
-    isResetPasswordFailed: false,
-  },
   userInfoRequest: {
     isUserInfoRequest: false,
     isUserInfoRequestSuccess: false,
@@ -41,75 +48,12 @@ const profileInitialState = {
   },
 };
 
-const profile = (state = profileInitialState, action) => {
+const profile = (
+  state = profileInitialState,
+  action: TProfile
+): IProfileState => {
   switch (action.type) {
-    case 'GET_RESET_CODE_FEED':
-      return {
-        ...state,
-        sendResetCodeRequest: {
-          ...state.sendResetCodeRequest,
-          isResetCodeRequest: true,
-        },
-      };
-
-    case 'GET_RESET_CODE_FAILED':
-      return {
-        ...state,
-        sendResetCodeRequest: {
-          ...state.sendResetCodeRequest,
-          isResetCodeRequest: false,
-          isResetCodeFailed: true,
-          isResetCodeSuccess: false,
-        },
-      };
-
-    case 'GET_RESET_CODE_SUCCESS':
-      return {
-        ...state,
-        sendResetCodeRequest: {
-          ...state.sendResetCodeRequest,
-          isResetCodeRequest: false,
-          isResetCodeFailed: false,
-          isResetCodeSuccess: true,
-        },
-      };
-
-    case 'GET_RESET_PASSWORD_FEED':
-      return {
-        ...state,
-        resetPasswordRequest: {
-          ...state.resetPasswordRequest,
-          isResetPasswordRequest: true,
-        },
-      };
-
-    case 'GET_RESET_PASSWORD_FAILED':
-      return {
-        ...state,
-        resetPasswordRequest: {
-          ...state.resetPasswordRequest,
-          isResetPasswordRequest: false,
-          isResetPasswordFailed: true,
-          isResetPasswordSuccess: false,
-        },
-      };
-
-    case 'GET_RESET_PASSWORD_SUCCESS':
-      return {
-        ...state,
-        sendResetCodeRequest: {
-          ...state.sendResetCodeRequest,
-          isResetCodeSuccess: false,
-        },
-        resetPasswordRequest: {
-          ...state.resetPasswordRequest,
-          isResetPasswordRequest: false,
-          isResetPasswordFailed: false,
-          isResetPasswordSuccess: true,
-        },
-      };
-
-    case 'GET_AUTH_FEED':
+    case GET_AUTH_FEED:
       return {
         ...state,
         authRequest: {
@@ -118,7 +62,7 @@ const profile = (state = profileInitialState, action) => {
         },
       };
 
-    case 'GET_AUTH_FEED_FAILED':
+    case GET_AUTH_FEED_FAILED:
       return {
         ...state,
         authRequest: {
@@ -129,7 +73,7 @@ const profile = (state = profileInitialState, action) => {
         },
       };
 
-    case 'GET_AUTH_FEED_SUCCESS':
+    case GET_AUTH_FEED_SUCCESS:
       return {
         ...state,
         authRequest: {
@@ -145,7 +89,7 @@ const profile = (state = profileInitialState, action) => {
         },
       };
 
-    case 'GET_LOGOUT_FEED':
+    case GET_LOGOUT_FEED:
       return {
         ...state,
         logoutRequest: {
@@ -154,7 +98,7 @@ const profile = (state = profileInitialState, action) => {
         },
       };
 
-    case 'GET_LOGOUT_FEED_FAILED':
+    case GET_LOGOUT_FEED_FAILED:
       return {
         ...state,
         logoutRequest: {
@@ -165,7 +109,7 @@ const profile = (state = profileInitialState, action) => {
         },
       };
 
-    case 'GET_LOGOUT_FEED_SUCCESS':
+    case GET_LOGOUT_FEED_SUCCESS:
       return {
         ...state,
         logoutRequest: {
@@ -175,42 +119,13 @@ const profile = (state = profileInitialState, action) => {
           isLogoutRequestSuccess: true,
         },
         user: {
+          email: null,
+          name: null,
           isLoggedIn: false,
         },
       };
 
-    case 'GET_TOKEN_FEED':
-      return {
-        ...state,
-        tokenRequest: {
-          ...state.tokenRequest,
-          isTokenRequest: true,
-        },
-      };
-
-    case 'GET_TOKEN_FAILED':
-      return {
-        ...state,
-        tokenRequest: {
-          ...state.tokenRequest,
-          isTokenRequest: false,
-          isTokenRequestFailed: true,
-          isTokenRequestSuccess: false,
-        },
-      };
-
-    case 'GET_TOKEN_SUCCESS':
-      return {
-        ...state,
-        tokenRequest: {
-          ...state.tokenRequest,
-          isTokenRequest: false,
-          isTokenRequestFailed: false,
-          isTokenRequestSuccess: true,
-        },
-      };
-
-    case 'GET_USER_INFO_FEED':
+    case GET_USER_INFO_FEED:
       return {
         ...state,
         userInfoRequest: {
@@ -219,7 +134,7 @@ const profile = (state = profileInitialState, action) => {
         },
       };
 
-    case 'GET_USER_INFO_FEED_FAILED':
+    case GET_USER_INFO_FEED_FAILED:
       return {
         ...state,
         userInfoRequest: {
@@ -230,7 +145,7 @@ const profile = (state = profileInitialState, action) => {
         },
       };
 
-    case 'GET_USER_INFO_FEED_SUCCESS':
+    case GET_USER_INFO_FEED_SUCCESS:
       return {
         ...state,
         userInfoRequest: {
@@ -246,7 +161,7 @@ const profile = (state = profileInitialState, action) => {
         },
       };
 
-    case 'CHANGE_USER_INFO_FEED':
+    case CHANGE_USER_INFO_FEED:
       return {
         ...state,
         changeUserInfoRequest: {
@@ -255,7 +170,7 @@ const profile = (state = profileInitialState, action) => {
         },
       };
 
-    case 'CHANGE_USER_INFO_FEED_FAILED':
+    case CHANGE_USER_INFO_FEED_FAILED:
       return {
         ...state,
         changeUserInfoRequest: {
@@ -266,7 +181,7 @@ const profile = (state = profileInitialState, action) => {
         },
       };
 
-    case 'CHANGE_USER_INFO_FEED_SUCCESS':
+    case CHANGE_USER_INFO_FEED_SUCCESS:
       return {
         ...state,
         changeUserInfoRequest: {

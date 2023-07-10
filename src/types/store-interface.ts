@@ -1,4 +1,4 @@
-interface IIngredient {
+export interface IIngredient {
   readonly _id: string;
   readonly name: string;
   readonly type: string;
@@ -13,72 +13,84 @@ interface IIngredient {
   readonly __v: number;
 }
 
-interface Istore {
-  readonly constructor: {
-    readonly bun: IIngredient | null;
-    readonly ingredients: Array<IIngredient> | null;
-    readonly sum: number;
+export interface IProfileState {
+  user: {
+    email: string | null;
+    name: string | null;
+    isLoggedIn: boolean;
   };
-  readonly ingredients: {
-    readonly buns: Array<IIngredient> | null;
-    readonly sauces: Array<IIngredient> | null;
-    readonly mains: Array<IIngredient> | null;
-    readonly ingredientsRequest: boolean;
-    readonly ingredientsFeedFailed: boolean;
-    readonly ingredientsFeedSuccess: boolean;
-    readonly currentIngredient: IIngredient;
+  authRequest: {
+    isAuthRequest: boolean;
+    isAuthRequestSuccess: boolean;
+    isAuthRequestFailed: boolean;
   };
-  readonly order: {
-    readonly currentOrder: {
-      readonly number: number;
-      readonly name: string;
-    } | null;
-    readonly orderRequest: boolean;
-    readonly orderFeedFailed: boolean;
-    readonly orderFeedSuccess: boolean;
+  logoutRequest: {
+    isLogoutRequest: boolean;
+    isLogoutRequestSuccess: boolean;
+    isLogoutRequestFailed: boolean;
   };
-  readonly profile: {
-    readonly user: {
-      readonly email: string | null;
-      readonly name: string | null;
-      readonly isLoggedIn: boolean;
-    };
-    readonly authRequest: {
-      readonly isAuthRequest: boolean;
-      readonly isAuthRequestSuccess: boolean;
-      readonly isAuthRequestFailed: boolean;
-    };
-    readonly logoutRequest: {
-      readonly isLogoutRequest: boolean;
-      readonly isLogoutRequestSuccess: boolean;
-      readonly isLogoutRequestFailed: boolean;
-    };
-    readonly tokenRequest: {
-      readonly isTokenRequest: boolean;
-      readonly isTokenRequestSuccess: boolean;
-      readonly isTokenRequestFailed: boolean;
-    };
-    readonly sendResetCodeRequest: {
-      readonly isResetCodeRequest: boolean;
-      readonly isResetCodeSuccess: boolean;
-      readonly isResetCodeFailed: boolean;
-    };
-    readonly resetPasswordRequest: {
-      readonly isResetPasswordRequest: boolean;
-      readonly isResetPasswordSuccess: boolean;
-      readonly isResetPasswordFailed: boolean;
-    };
-    readonly userInfoRequest: {
-      readonly isUserInfoRequest: boolean;
-      readonly isUserInfoRequestSuccess: boolean;
-      readonly isUserInfoRequestFailed: boolean;
-    };
-    readonly changeUserInfoRequest: {
-      readonly isChangeUserInfoRequest: boolean;
-      readonly isChangeUserInfoRequestFailed: boolean;
-      readonly isChangeUserInfoRequestSuccess: boolean;
-    };
+  userInfoRequest: {
+    isUserInfoRequest: boolean;
+    isUserInfoRequestSuccess: boolean;
+    isUserInfoRequestFailed: boolean;
+  };
+  changeUserInfoRequest: {
+    isChangeUserInfoRequest: boolean;
+    isChangeUserInfoRequestFailed: boolean;
+    isChangeUserInfoRequestSuccess: boolean;
   };
 }
 
-export { type IIngredient, type Istore };
+export interface IConstructorState {
+  bun: IIngredient | null;
+  ingredients: Array<IIngredient> | null;
+  sum: number;
+}
+
+export interface IIngredientState {
+  buns: Array<IIngredient> | null;
+  sauces: Array<IIngredient> | null;
+  mains: Array<IIngredient> | null;
+  ingredientsRequest: boolean;
+  ingredientsFeedFailed: boolean;
+  ingredientsFeedSuccess: boolean;
+  currentIngredient: IIngredient | null;
+}
+
+export interface IOrderState {
+  currentOrder: null | {
+    number: number;
+    name: string;
+  };
+  orderRequest: boolean;
+  orderFeedFailed: boolean;
+  orderFeedSuccess: boolean;
+}
+
+export interface IResetPasswordState {
+  sendResetCodeRequest: {
+    isResetCodeRequest: boolean;
+    isResetCodeSuccess: boolean;
+    isResetCodeFailed: boolean;
+  };
+  resetPasswordRequest: {
+    isResetPasswordRequest: boolean;
+    isResetPasswordSuccess: boolean;
+    isResetPasswordFailed: boolean;
+  };
+}
+
+export interface ITokenState {
+  isTokenRequest: boolean;
+  isTokenRequestSuccess: boolean;
+  isTokenRequestFailed: boolean;
+}
+
+export interface Istore {
+  readonly constructor: IConstructorState;
+  readonly ingredients: IIngredientState;
+  readonly order: IOrderState | null;
+  readonly profile: IProfileState;
+  readonly resetPassword: IResetPasswordState;
+  readonly token: ITokenState;
+}
