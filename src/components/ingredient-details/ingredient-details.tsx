@@ -1,17 +1,20 @@
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import ingredientDetailsStyle from './ingredient-details.module.css';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-function IngredientDetails() {
+import { IIngredient, Istore } from '../../types/store-interface';
+
+const IngredientDetails: React.FC = () => {
   const dispatch = useDispatch();
 
   const ingredient = useParams().ingredientId;
-  const currentIngredient = useSelector(
+  const currentIngredient = useSelector<Istore, IIngredient | null>(
     (store) => store.ingredients.currentIngredient
   );
 
-  const ingredientsFeedSuccess = useSelector(
+  const ingredientsFeedSuccess = useSelector<Istore, boolean>(
     (store) => store.ingredients.ingredientsFeedSuccess
   );
   useEffect(() => {
@@ -26,6 +29,7 @@ function IngredientDetails() {
   }, [ingredientsFeedSuccess]);
 
   useEffect(() => {}, [ingredient]);
+
   return (
     <div className={ingredientDetailsStyle.container}>
       <h2 className='text text_type_main-large mt-2'>Детали ингредиента</h2>
@@ -85,6 +89,6 @@ function IngredientDetails() {
       </ul>
     </div>
   );
-}
+};
 
 export default IngredientDetails;

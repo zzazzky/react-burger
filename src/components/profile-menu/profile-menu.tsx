@@ -1,12 +1,14 @@
+import React from 'react';
 import { logout } from '../../services/actions/logout';
 import { NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import profileMenuStyles from './profile-menu.module.css';
+import { TypedDispatch } from '../../types/thunk-dispatch-types';
 
 function ProfileMenu() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<TypedDispatch>();
 
-  const handleLogoutButtonClick = (e) => {
+  const handleLogoutButtonClick = () => {
     dispatch(logout());
   };
 

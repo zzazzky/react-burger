@@ -1,3 +1,4 @@
+import React from 'react';
 import { useCallback, createRef, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import burgerIngridientStyles from './burger-ingredients.module.css';
@@ -5,70 +6,95 @@ import IngredientDetails from '../ingredient-details/ingredient-details';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import Ingredient from '../ingredient/ingredient';
 import IngredientsCategory from '../ingredients-category/ingredients-category';
-import Modal from '../../components/modal/modal';
+import Modal from '../modal/modal';
 import { useNavigate } from 'react-router-dom';
+import { IIngredient, Istore } from '../../types/store-interface';
 
-function BurgerIngredients() {
+const BurgerIngredients: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [currentTab, setCurrentTab] = useState('buns');
+  const [currentTab, setCurrentTab] = useState<string>('buns');
 
-  const bunsRef = createRef();
-  const saucesRef = createRef();
-  const mainsRef = createRef();
-  const containerRef = createRef();
-  const [containerRefTop, setContainerRefTop] = useState(null);
+  const bunsRef = createRef<HTMLDivElement>();
+  const saucesRef = createRef<HTMLDivElement>();
+  const mainsRef = createRef<HTMLDivElement>();
+  const containerRef = createRef<HTMLDivElement>();
+  const [containerRefTop, setContainerRefTop] = useState<number | null>(null);
 
   useEffect(() => {
-    setContainerRefTop(containerRef.current.getBoundingClientRect().top);
+    containerRef.current !== null &&
+      setContainerRefTop(containerRef.current.getBoundingClientRect().top);
   }, []);
 
-  const buns = useSelector((store) => store.ingredients.buns);
+  const buns = useSelector<Istore, Array<IIngredient> | null>(
+    (store) => store.ingredients.buns
+  );
 
-  const mains = useSelector((store) => store.ingredients.mains);
+  const mains = useSelector<Istore, Array<IIngredient> | null>(
+    (store) => store.ingredients.mains
+  );
 
-  const sauces = useSelector((store) => store.ingredients.sauces);
+  const sauces = useSelector<Istore, Array<IIngredient> | null>(
+    (store) => store.ingredients.sauces
+  );
 
-  const constructorBun = useSelector((store) => store.constructor.bun);
+  const constructorBun = useSelector<Istore, IIngredient | null>(
+    (store) => store.constructor.bun
+  );
 
-  const constructorIngredients = useSelector(
+  const constructorIngredients = useSelector<Istore, Array<IIngredient> | null>(
     (store) => store.constructor.ingredients
   );
 
-  const currentIngredient = useSelector(
+  const currentIngredient = useSelector<Istore, IIngredient | null>(
     (store) => store.ingredients.currentIngredient
   );
 
   const handleIngredientContainerScroll = () => {
     if (
-      Math.abs(bunsRef.current.getBoundingClientRect().top - containerRefTop) <
-        Math.abs(
-          saucesRef.current.getBoundingClientRect().top - containerRefTop
-        ) &&
-      Math.abs(bunsRef.current.getBoundingClientRect().top - containerRefTop) <
-        Math.abs(mainsRef.current.getBoundingClientRect().top - containerRefTop)
+      bunsRef.current !== null &&
+      saucesRef.current !== null &&
+      mainsRef.current !== null &&
+      containerRefTop !== null
     ) {
-      setCurrentTab('buns');
-    } else if (
-      Math.abs(
-        saucesRef.current.getBoundingClientRect().top - containerRefTop
-      ) <
+      if (
         Math.abs(
           bunsRef.current.getBoundingClientRect().top - containerRefTop
-        ) &&
-      Math.abs(
-        saucesRef.current.getBoundingClientRect().top - containerRefTop
-      ) <
-        Math.abs(mainsRef.current.getBoundingClientRect().top - containerRefTop)
-    ) {
-      setCurrentTab('sauces');
-    } else {
-      setCurrentTab('mains');
+        ) <
+          Math.abs(
+            saucesRef.current.getBoundingClientRect().top - containerRefTop
+          ) &&
+        Math.abs(
+          bunsRef.current.getBoundingClientRect().top - containerRefTop
+        ) <
+          Math.abs(
+            mainsRef.current.getBoundingClientRect().top - containerRefTop
+          )
+      ) {
+        setCurrentTab('buns');
+      } else if (
+        Math.abs(
+          saucesRef.current.getBoundingClientRect().top - containerRefTop
+        ) <
+          Math.abs(
+            bunsRef.current.getBoundingClientRect().top - containerRefTop
+          ) &&
+        Math.abs(
+          saucesRef.current.getBoundingClientRect().top - containerRefTop
+        ) <
+          Math.abs(
+            mainsRef.current.getBoundingClientRect().top - containerRefTop
+          )
+      ) {
+        setCurrentTab('sauces');
+      } else {
+        setCurrentTab('mains');
+      }
     }
   };
 
-  const handleIngredientClick = useCallback((ingredient) => {
+  const handleIngredientClick = useCallback((ingredient: IIngredient) => {
     dispatch({
       type: 'SET_CURRENT_INGREDIENT',
       payload: {
@@ -94,6 +120,7 @@ function BurgerIngredients() {
           value='Булки'
           active={currentTab === 'buns'}
           onClick={() =>
+            bunsRef.current !== null &&
             bunsRef.current.scrollIntoView({ behavior: 'smooth' })
           }>
           Булки
@@ -102,6 +129,7 @@ function BurgerIngredients() {
           value='Соусы'
           active={currentTab === 'sauces'}
           onClick={() =>
+            saucesRef.current !== null &&
             saucesRef.current.scrollIntoView({ behavior: 'smooth' })
           }>
           Соусы
@@ -110,6 +138,7 @@ function BurgerIngredients() {
           value='Начинки'
           active={currentTab === 'mains'}
           onClick={() =>
+            mainsRef.current !== null &&
             mainsRef.current.scrollIntoView({ behavior: 'smooth' })
           }>
           Начинки
@@ -127,7 +156,7 @@ function BurgerIngredients() {
               <li key={filteredItem?._id}>
                 {' '}
                 <Ingredient
-                  count={constructorBun?._id === filteredItem?._id && 1}
+                  count={constructorBun?._id === filteredItem?._id ? 1 : null}
                   ingredient={filteredItem}
                   onClick={handleIngredientClick}
                 />
@@ -145,10 +174,11 @@ function BurgerIngredients() {
                   count={
                     constructorIngredients?.find(
                       (item) => item?._id === filteredItem?._id
-                    ) &&
-                    constructorIngredients?.filter(
-                      (item) => item?._id === filteredItem?._id
-                    ).length
+                    )
+                      ? constructorIngredients?.filter(
+                          (item) => item?._id === filteredItem?._id
+                        ).length
+                      : null
                   }
                   ingredient={filteredItem}
                   onClick={handleIngredientClick}
@@ -169,6 +199,10 @@ function BurgerIngredients() {
                     constructorIngredients?.filter(
                       (item) => item?._id === filteredItem?._id
                     ).length
+                      ? constructorIngredients?.filter(
+                          (item) => item?._id === filteredItem?._id
+                        ).length
+                      : null
                   }
                   ingredient={filteredItem}
                   onClick={handleIngredientClick}
@@ -185,6 +219,6 @@ function BurgerIngredients() {
       </div>
     </section>
   );
-}
+};
 
 export default BurgerIngredients;

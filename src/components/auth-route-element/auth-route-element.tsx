@@ -1,12 +1,20 @@
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate, useLocation } from 'react-router-dom';
+import { Istore } from '../../types/store-interface';
 
-function AuthRouteElement({ element }) {
-  const isLoggedIn = useSelector((store) => store.profile.user.isLoggedIn);
+interface IAuthRouteElementProps {
+  element: React.ReactElement;
+}
+
+const AuthRouteElement: React.FC<IAuthRouteElementProps> = ({ element }) => {
+  const isLoggedIn = useSelector<Istore, boolean>(
+    (store) => store.profile.user.isLoggedIn
+  );
 
   const location = useLocation();
-  const from = location.state?.from || '/';
-  const isUserLoading = useSelector(
+  const from: string = (location.state?.from as string) || '/';
+  const isUserLoading = useSelector<Istore, boolean>(
     (store) =>
       !store.profile.userInfoRequest.isUserInfoRequestFailed &&
       !store.profile.userInfoRequest.isUserInfoRequestSuccess
@@ -23,5 +31,5 @@ function AuthRouteElement({ element }) {
       />
     );
   }
-}
+};
 export default AuthRouteElement;

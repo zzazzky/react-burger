@@ -1,3 +1,4 @@
+import React from 'react';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
@@ -15,14 +16,21 @@ import ProtectedRouteElement from '../protected-route-element/protected-route-el
 import AuthRouteElement from '../auth-route-element/auth-route-element';
 import { getUserInfo } from '../../services/actions/user';
 import OrderHistory from '../../pages/order-history/order-history';
-import IngredientDetails from '../../components/ingredient-details/ingredient-details';
+import IngredientDetails from '../ingredient-details/ingredient-details';
+import { TypedDispatch } from '../../types/thunk-dispatch-types';
 
-function App() {
-  const dispatch = useDispatch();
+type LocationState = {
+  path: string;
+  background: string;
+};
+
+const App: React.FC = () => {
+  const dispatch = useDispatch<TypedDispatch>();
   const location = useLocation();
   const navigate = useNavigate();
 
-  let background = location.state && location.state?.background;
+  let background: string =
+    (location.state as LocationState) && location.state?.background;
 
   useEffect(() => {
     dispatch(getIngredientsFeed());
@@ -44,7 +52,6 @@ function App() {
       <main className='pt-10 pb-10 main'>
         <Routes location={location.state?.background || location}>
           <Route
-            exact
             path='/'
             element={<BurgerMaker />}
           />
@@ -85,6 +92,6 @@ function App() {
       </main>
     </div>
   );
-}
+};
 
 export default App;

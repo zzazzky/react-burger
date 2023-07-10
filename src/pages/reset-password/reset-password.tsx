@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { useState } from 'react';
@@ -7,33 +8,39 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import MainForm from '../../components/main-form/main-form';
 import { resetPassword } from '../../services/actions/reset-password';
+import { TypedDispatch } from '../../types/thunk-dispatch-types';
+import { Istore } from '../../types/store-interface';
 
-function ResetPassword() {
-  const dispatch = useDispatch();
+const ResetPassword: React.FC = () => {
+  const dispatch = useDispatch<TypedDispatch>();
 
-  const isResetSend = useSelector(
+  const isResetSend = useSelector<Istore, boolean>(
     (store) => store.profile.sendResetCodeRequest.isResetCodeSuccess
   );
 
-  const isResetRequest = useSelector(
+  const isResetRequest = useSelector<Istore, boolean>(
     (store) => store.profile.sendResetCodeRequest.isResetCodeRequest
   );
 
-  const isError = useSelector(
+  const isError = useSelector<Istore, boolean>(
     (store) => store.profile.resetPasswordRequest.isResetPasswordFailed
   );
 
-  const [form, setForm] = useState({ password: '', code: '' });
-  const onFormChange = (e) => {
+  const [form, setForm] = useState<{ password: string; code: string }>({
+    password: '',
+    code: '',
+  });
+
+  const onFormChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  function handleResetPasswordForm(e) {
+  function handleResetPasswordForm(e: React.FormEvent<HTMLFormElement>): void {
     e.preventDefault();
     dispatch(resetPassword({ password: form.password, token: form.code }));
   }
 
-  const underText = (
+  const underText: React.ReactNode = (
     <p className='text text_type_main-default text_color_inactive'>
       Вспомнили пароль?
       <Link
@@ -86,6 +93,6 @@ function ResetPassword() {
       />
     );
   }
-}
+};
 
 export default ResetPassword;

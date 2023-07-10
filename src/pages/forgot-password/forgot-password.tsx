@@ -1,30 +1,32 @@
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { EmailInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import MainForm from '../../components/main-form/main-form';
 import { sendResetCode } from '../../services/actions/reset-password';
 import { useSelector, useDispatch } from 'react-redux';
+import { TypedDispatch } from '../../types/thunk-dispatch-types';
+import { Istore } from '../../types/store-interface';
 
 function ForgotPassword() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const [email, setEmail] = useState('');
-  const onEmailChange = (e) => {
+  const dispatch = useDispatch<TypedDispatch>();
+  const [email, setEmail] = useState<string>('');
+  const onEmailChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setEmail(e.target.value);
   };
 
-  const isError = useSelector(
+  const isError = useSelector<Istore, boolean>(
     (store) => store.profile.sendResetCodeRequest.isResetCodeFailed
   );
 
-  function handleForgotPasswordForm(e) {
+  function handleForgotPasswordForm(e: React.FormEvent<HTMLFormElement>): void {
     e.preventDefault();
     dispatch(sendResetCode({ email }));
     navigate('/reset-password');
   }
 
-  const underText = (
+  const underText: React.ReactNode = (
     <p className='text text_type_main-default text_color_inactive'>
       Вспомнили пароль?
       <Link

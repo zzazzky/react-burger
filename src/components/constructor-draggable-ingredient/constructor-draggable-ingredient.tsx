@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import React from 'react';
 import draggableIngredientStyles from './constructor-draggable-ingredient.module.css';
 import { useDispatch } from 'react-redux';
 import { useDrag, useDrop } from 'react-dnd';
@@ -10,29 +10,20 @@ import {
   DragIcon,
   ConstructorElement,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import { IIngredient } from '../../types/store-interface';
 
-const DraggableContainer = ({ ingredient, index }) => {
+interface IDraggableContainerProps {
+  ingredient: IIngredient;
+  index: number;
+}
+
+const DraggableContainer: React.FC<IDraggableContainerProps> = ({
+  ingredient,
+  index,
+}) => {
   const dispatch = useDispatch();
-  const [, dragRef] = useDrag({
-    type: 'constructor-ingredient',
-    item: { index },
-  });
 
-  const [{ isHover }, constructorSortTarget] = useDrop({
-    accept: 'constructor-ingredient',
-    drop(ingredient) {
-      handleIngredientSortDrop(ingredient.index, index);
-    },
-    collect: (monitor) => ({
-      isHover: monitor.isOver(),
-    }),
-  });
-
-  const ref = useRef(null);
-
-  const dragDropRef = dragRef(constructorSortTarget(ref));
-
-  const handleIngredientSortDrop = (dragIndex, dropIndex) => {
+  const handleIngredientSortDrop = (dragIndex: number, dropIndex: number) => {
     dispatch({
       type: SORT_CONSTRUCTOR_INGREDIENTS,
       payload: {
@@ -52,6 +43,21 @@ const DraggableContainer = ({ ingredient, index }) => {
     });
   };
 
+  const [, dragRef] = useDrag(() => ({
+    type: 'constructor-ingredient',
+    item: { index },
+  }));
+
+  const [{ isHover }, constructorSortTarget] = useDrop(() => ({
+    accept: 'constructor-ingredient',
+    drop: (ingredient: IIngredient & { readonly index: number }) => {
+      handleIngredientSortDrop(ingredient.index, index);
+    },
+    collect: (monitor) => ({
+      isHover: monitor.isOver(),
+    }),
+  }));
+
   return (
     <div
       className={
@@ -59,7 +65,7 @@ const DraggableContainer = ({ ingredient, index }) => {
           ? draggableIngredientStyles.itemContainerHover
           : draggableIngredientStyles.itemContainer
       }
-      ref={dragDropRef}>
+      ref={(node) => dragRef(constructorSortTarget(node))}>
       <DragIcon type='primary' />
       <ConstructorElement
         text={ingredient.name}

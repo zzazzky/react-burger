@@ -1,3 +1,4 @@
+import React from 'react';
 import { useSelector } from 'react-redux';
 import orderDetailsStyle from './order-details.module.css';
 import {
@@ -5,21 +6,30 @@ import {
   CloseIcon,
   BurgerIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Istore } from '../../types/store-interface';
 
-function OrderDetails() {
-  const orderNumber = useSelector((store) => store.order.currentOrder?.number);
+const OrderDetails: React.FC = () => {
+  const orderNumber = useSelector<Istore, number | undefined>(
+    (store) => store.order.currentOrder?.number
+  );
 
-  const orderRequest = useSelector((store) => store.order.orderRequest);
+  const orderRequest = useSelector<Istore, boolean>(
+    (store) => store.order.orderRequest
+  );
 
-  const orderFeedSuccess = useSelector((store) => store.order.orderFeedSuccess);
+  const orderFeedSuccess = useSelector<Istore, boolean>(
+    (store) => store.order.orderFeedSuccess
+  );
 
-  const orderFeedFailed = useSelector((store) => store.order.orderFeedFailed);
+  const orderFeedFailed = useSelector<Istore, boolean>(
+    (store) => store.order.orderFeedFailed
+  );
 
-  const replacementText = !orderFeedFailed
+  const replacementText: string = !orderFeedFailed
     ? 'Отправляем заказ'
     : 'Упс, что-то пошло не так! Попробуйте еще раз';
 
-  const replacementPicture = !orderFeedFailed ? (
+  const replacementPicture: React.ReactNode = !orderFeedFailed ? (
     <BurgerIcon type='primary' />
   ) : (
     <CloseIcon type='primary' />
@@ -48,6 +58,6 @@ function OrderDetails() {
       </div>
     </>
   );
-}
+};
 
 export default OrderDetails;
