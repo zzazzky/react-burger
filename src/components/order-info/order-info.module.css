@@ -1,0 +1,89 @@
+.container {
+  min-width: 640px;
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+}
+
+.orderID {
+  align-self: center;
+  text-align: center;
+}
+.timeContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  justify-self: stretch;
+  margin-top: 40px;
+}
+
+.currencyContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  align-items: center;
+}
+
+.currencyContainer svg {
+  height: 24px;
+  width: 24px;
+}
+
+.ingredients {
+  height: 312px;
+  overflow-y: scroll;
+}
+
+.ingredients::-webkit-scrollbar {
+  width: 8px;
+}
+
+.ingredients::-webkit-scrollbar-track {
+  background: #2f2f37;
+}
+
+.ingredients::-webkit-scrollbar-thumb {
+  background: #8585ad;
+}
+
+.ingredients::-webkit-scrollbar-thumb:hover {
+  opacity: 0.6;
+}
+
+.ingredientContainer {
+  margin-top: 16px;
+  margin-right: 24px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ingredientInfo {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+.ingredientButton {
+  width: 64px;
+  height: 64px;
+  border-radius: 100px;
+  background: linear-gradient(63.18deg, #801ab3 0%, #4c4cff 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  position: relative;
+}
+
+.ingredientButton img {
+  height: 60px;
+  width: 60px;
+  object-fit: cover;
+  object-position: center;
+  background-color: #000;
+  border-radius: 56px;
+}

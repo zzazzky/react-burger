@@ -67,7 +67,11 @@ class Api implements IApi {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ token: localStorage.getItem('token') }),
-      }).then((res) => res);
+      })
+        .then((res) => res)
+        .then((res) => {
+          return res;
+        });
     } else {
       return Promise.reject(401);
     }

@@ -8,13 +8,17 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
 const OrderDetails: React.FC = () => {
-  const orderNumber = useSelector((store) => store.order.currentOrder?.number);
+  const orderNumber = useSelector((store) => store.newOrder.info?.number);
 
-  const orderRequest = useSelector((store) => store.order.orderRequest);
+  const orderRequest = useSelector((store) => store.newOrder.orderRequest);
 
-  const orderFeedSuccess = useSelector((store) => store.order.orderFeedSuccess);
+  const orderFeedSuccess = useSelector(
+    (store) => store.newOrder.orderFeedSuccess
+  );
 
-  const orderFeedFailed = useSelector((store) => store.order.orderFeedFailed);
+  const orderFeedFailed = useSelector(
+    (store) => store.newOrder.orderFeedFailed
+  );
 
   const replacementText: string = !orderFeedFailed
     ? 'Отправляем заказ'

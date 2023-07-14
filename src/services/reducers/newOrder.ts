@@ -4,16 +4,19 @@ import {
   GET_ORDER_FEED_FAILED,
   GET_ORDER_FEED_SUCCESS,
 } from '../сonstants/actions';
-import { IOrderState } from '../../types/store-interface';
+import { INewOrderState } from '../../types/store-interface';
 
-const orderInitialState: IOrderState = {
-  currentOrder: null,
+const newOrderInitialState: INewOrderState = {
+  info: null,
   orderRequest: false,
   orderFeedFailed: false,
   orderFeedSuccess: false,
 };
 
-const order = (state = orderInitialState, action: TOrder): IOrderState => {
+const newOrder = (
+  state = newOrderInitialState,
+  action: TOrder
+): INewOrderState => {
   switch (action.type) {
     case GET_ORDER_FEED:
       return {
@@ -35,14 +38,15 @@ const order = (state = orderInitialState, action: TOrder): IOrderState => {
         orderRequest: false,
         orderFeedFailed: false,
         orderFeedSuccess: true,
-        currentOrder: {
+        info: {
           number: action.payload.number,
           name: action.payload.name,
         },
       };
+
     default:
       return state;
   }
 };
 
-export default order;
+export default newOrder;

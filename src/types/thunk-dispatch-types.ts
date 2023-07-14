@@ -8,6 +8,7 @@ import { TConstructor } from '../services/actions/constructor';
 import { TToken } from '../services/actions/token';
 import { TResetPasswordFeed } from '../services/actions/reset-password';
 import store from '../services/store/store';
+import { TFeedWS } from '../services/actions/feed';
 export type TAppAction =
   | TOrder
   | TIngredient
@@ -16,7 +17,8 @@ export type TAppAction =
   | TLogout
   | TConstructor
   | TToken
-  | TResetPasswordFeed;
+  | TResetPasswordFeed
+  | TFeedWS;
 
 export type RootState = ReturnType<typeof store.getState>;
 

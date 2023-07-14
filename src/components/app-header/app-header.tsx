@@ -36,7 +36,7 @@ const AppHeader: React.FC = () => {
                 }
               />
             }
-            to='/orders'>
+            to='/feed'>
             Лента заказов
           </HeaderLink>
         </div>

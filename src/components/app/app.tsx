@@ -10,6 +10,7 @@ import Login from '../../pages/login/login';
 import ForgotPassword from '../../pages/forgot-password/forgot-password';
 import ResetPassword from '../../pages/reset-password/reset-password';
 import Profile from '../../pages/profile/profile';
+import Feed from '../../pages/feed/feed';
 import { getIngredientsFeed } from '../../services/actions/ingredients';
 import ProtectedRouteElement from '../protected-route-element/protected-route-element';
 import AuthRouteElement from '../auth-route-element/auth-route-element';
@@ -17,6 +18,8 @@ import { getUserInfo } from '../../services/actions/user';
 import OrderHistory from '../../pages/order-history/order-history';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import { useDispatch } from '../../types/hooks';
+import cookie from '../../utils/cookie';
+import OrderInfo from '../order-info/order-info';
 
 type LocationState = {
   path: string;
@@ -33,6 +36,11 @@ const App: React.FC = () => {
 
   useEffect(() => {
     dispatch(getIngredientsFeed());
+  }, []);
+
+  useEffect(() => {
+    console.log(localStorage.getItem('token'));
+    console.log(cookie.getCookie('accessToken'));
   }, []);
 
   useEffect(() => {
@@ -57,7 +65,16 @@ const App: React.FC = () => {
           {background && <Route path='/ingredients/:ingredientId' />}
           <Route
             path='/ingredients/:ingredientId'
-            element={<IngredientDetails />}
+            element={<OrderInfo />}
+          />
+          {background && <Route path='/feed/:id' />}
+          <Route
+            path='/feed/:id'
+            element={<OrderInfo />}
+          />
+          <Route
+            path='/feed'
+            element={<Feed />}
           />
           <Route
             path='/login'
@@ -78,6 +95,11 @@ const App: React.FC = () => {
           <Route
             path='/profile'
             element={<ProtectedRouteElement element={<Profile />} />}
+          />
+          {background && <Route path='/profile/orders/:id' />}
+          <Route
+            path='/profile/orders/:id'
+            element={<ProtectedRouteElement element={<OrderInfo />} />}
           />
           <Route
             path='/profile/orders'

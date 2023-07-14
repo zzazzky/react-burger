@@ -99,7 +99,9 @@ const BurgerConstructor: React.FC = () => {
       </div>
       <div className={burgerConstructorStyles.buttonContainer}>
         <div className={`${burgerConstructorStyles.sum} mr-10`}>
-          <p className='text text_type_digits-medium mr-2'>{sum}</p>
+          <p className='text text_type_digits-medium mr-2'>
+            {sum?.toLocaleString()}
+          </p>
           <CurrencyIcon type='primary' />
         </div>
         <Button

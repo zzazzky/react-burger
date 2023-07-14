@@ -5,6 +5,7 @@ import {
   GET_TOKEN_FEED,
   GET_TOKEN_SUCCESS,
   GET_TOKEN_FAILED,
+  FEED_WS_CONNECTION_ERROR,
 } from '../сonstants/actions';
 import { AppDispatch } from '../../types/thunk-dispatch-types';
 import { GET_ORDER_FEED_FAILED } from '../сonstants/actions';
@@ -35,6 +36,7 @@ export const refreshToken =
       | typeof GET_ORDER_FEED_FAILED
       | typeof GET_USER_INFO_FEED_FAILED
       | typeof CHANGE_USER_INFO_FEED_FAILED
+      | typeof FEED_WS_CONNECTION_ERROR
   ) =>
   (dispatch: AppDispatch) => {
     dispatch({
@@ -54,7 +56,7 @@ export const refreshToken =
           });
         }
       })
-      .then(() => props !== null && dispatch(previousAction(props)))
+      .then(() => dispatch(previousAction(props)))
       .catch(() => {
         dispatch({
           type: GET_TOKEN_FAILED,

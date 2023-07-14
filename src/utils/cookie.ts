@@ -3,7 +3,7 @@ interface ICookie {
   setCookie: (
     name: string,
     value: string,
-    props: { expires: number | Date; path: string }
+    props: { expires: number; path: string }
   ) => void;
   deleteCookie: (name: string) => void;
 }
@@ -23,17 +23,14 @@ class Cookie implements ICookie {
   setCookie(
     name: string,
     value: string,
-    props: { expires: number | Date | string; path: string }
+    props: { expires: number | string; path: string }
   ) {
     props = props || {};
     let exp = props.expires;
-    if (typeof exp == 'number' && exp) {
+    if (typeof exp == 'number') {
       const d = new Date();
       d.setTime(d.getTime() + exp * 1000);
-      exp = props.expires = d;
-    }
-    if (typeof exp !== 'number' && typeof exp !== 'string' && exp.toUTCString) {
-      props.expires = exp.toUTCString();
+      exp = props.expires = d.toUTCString();
     }
     value = encodeURIComponent(value);
     let updatedCookie = name + '=' + value;

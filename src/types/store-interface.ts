@@ -57,14 +57,33 @@ export interface IIngredientState {
   currentIngredient: IIngredient | null;
 }
 
-export interface IOrderState {
-  currentOrder: null | {
+export interface IOrderInfo {
+  ingredients: Array<string> | null;
+  _id: string | null;
+  status: 'created' | 'pending' | 'done' | null;
+  number: number | null;
+  createdAt: string | null;
+  updatedAt: string | null;
+  name: string | null;
+}
+
+export interface INewOrderState {
+  info: null | {
     number: number;
     name: string;
   };
   orderRequest: boolean;
   orderFeedFailed: boolean;
   orderFeedSuccess: boolean;
+}
+
+export interface IFeedState {
+  wsConnected: boolean;
+  wsError: boolean;
+  orders: Array<IOrderInfo> | null;
+  total: number | null;
+  totalToday: number | null;
+  currentOrder: IOrderInfo | null;
 }
 
 export interface IResetPasswordState {
@@ -89,7 +108,8 @@ export interface ITokenState {
 export interface Istore {
   readonly constructor: IConstructorState;
   readonly ingredients: IIngredientState;
-  readonly order: IOrderState | null;
+  readonly newOrder: INewOrderState | null;
+  readonly feed: IFeedState | null;
   readonly profile: IProfileState;
   readonly resetPassword: IResetPasswordState;
   readonly token: ITokenState;

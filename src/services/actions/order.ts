@@ -5,7 +5,7 @@ import {
   GET_ORDER_FEED_FAILED,
   GET_ORDER_FEED_SUCCESS,
 } from '../сonstants/actions';
-import { IIngredient } from '../../types/store-interface';
+import { IIngredient, IOrderInfo } from '../../types/store-interface';
 import { IOrder } from '../../types/request-interfaces';
 import { AppDispatch } from '../../types/thunk-dispatch-types';
 interface IOrderFeed {
