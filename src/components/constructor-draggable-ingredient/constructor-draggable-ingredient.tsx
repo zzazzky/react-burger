@@ -65,7 +65,8 @@ const DraggableContainer: React.FC<IDraggableContainerProps> = ({
           ? draggableIngredientStyles.itemContainerHover
           : draggableIngredientStyles.itemContainer
       }
-      ref={(node) => dragRef(constructorSortTarget(node))}>
+      ref={(node) => dragRef(constructorSortTarget(node))}
+      data-cy='constructor-ingredients'>
       <DragIcon type='primary' />
       <ConstructorElement
         text={ingredient.name}

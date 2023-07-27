@@ -10,6 +10,7 @@ const ModalOverlay: React.FC<IModalOverlayProps> = (props) => {
     <div
       className={modalOverlayStyles.overlay}
       onClick={props.onClose}
+      data-cy='overlay'
     />
   );
 };

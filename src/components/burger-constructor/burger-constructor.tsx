@@ -64,8 +64,11 @@ const BurgerConstructor: React.FC = () => {
     <section className={`${burgerConstructorStyles.section} pt-15 pl-4`}>
       <div
         className={`${burgerConstructorStyles.container} mb-10`}
-        ref={ingredientDropTarget}>
-        <div className={`${burgerConstructorStyles.lockContainer} pl-8 pr-4`}>
+        ref={ingredientDropTarget}
+        data-cy='constructor'>
+        <div
+          className={`${burgerConstructorStyles.lockContainer} pl-8 pr-4`}
+          data-cy='constructor-bun-1'>
           <ConstructorElement
             type='top'
             isLocked={true}
@@ -86,7 +89,9 @@ const BurgerConstructor: React.FC = () => {
             );
           })}
         </ul>
-        <div className={`${burgerConstructorStyles.lockContainer} pl-8 pr-4`}>
+        <div
+          className={`${burgerConstructorStyles.lockContainer} pl-8 pr-4`}
+          data-cy='constructor-bun-2'>
           <ConstructorElement
             type='bottom'
             isLocked={true}
@@ -97,7 +102,9 @@ const BurgerConstructor: React.FC = () => {
           />
         </div>
       </div>
-      <div className={burgerConstructorStyles.buttonContainer}>
+      <div
+        className={burgerConstructorStyles.buttonContainer}
+        data-cy='order-button-container'>
         <div className={`${burgerConstructorStyles.sum} mr-10`}>
           <p className='text text_type_digits-medium mr-2'>
             {sum?.toLocaleString()}

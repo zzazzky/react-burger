@@ -34,7 +34,8 @@ const Modal: React.FC<IModalProps> = (props) => {
           <div className={`${modalStyles.container} p-10`}>
             <button
               className={`${modalStyles.closeButton} mt-5 mb-5`}
-              onClick={props.onClose}>
+              onClick={props.onClose}
+              aria-label='закрыть'>
               <CloseIcon type='primary' />
             </button>
             <div className={modalStyles.contentContainer}>{props.children}</div>

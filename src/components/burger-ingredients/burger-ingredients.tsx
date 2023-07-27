@@ -142,6 +142,7 @@ const BurgerIngredients: React.FC = () => {
       </div>
       <div
         className={burgerIngridientStyles.allIngridients}
+        data-cy='ingredients'
         ref={containerRef}
         onScroll={handleIngredientContainerScroll}>
         <IngredientsCategory

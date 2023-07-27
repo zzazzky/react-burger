@@ -43,7 +43,10 @@ class Api implements IApi {
   getIngredients() {
     return this.request(`${this.url}/ingredients`, {
       method: 'GET',
-    }).then((res) => res.data);
+    }).then((res) => {
+      console.log(res);
+      return res.data;
+    });
   }
 
   getProfileInfo() {
@@ -53,7 +56,10 @@ class Api implements IApi {
         headers: {
           Authorization: 'Bearer ' + cookie.getCookie('accessToken'),
         },
-      }).then((res) => res);
+      }).then((res) => {
+        console.log(res);
+        return res;
+      });
     } else {
       return Promise.reject(403);
     }

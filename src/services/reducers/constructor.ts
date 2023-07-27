@@ -35,15 +35,21 @@ const constructor = (
       };
     case SORT_CONSTRUCTOR_INGREDIENTS:
       if (state.ingredients !== null) {
-        state.ingredients.splice(
-          action.payload.dropIndex,
-          0,
-          state.ingredients[action.payload.dragIndex]
-        );
+        const draggableIngredient = state.ingredients[action.payload.dragIndex];
+        state.ingredients.splice(action.payload.dragIndex, 1);
 
         action.payload.dragIndex < action.payload.dropIndex
-          ? state.ingredients.splice(action.payload.dragIndex, 1)
-          : state.ingredients.splice(action.payload.dragIndex + 1, 1);
+          ? state.ingredients.splice(
+              action.payload.dropIndex - 1,
+              0,
+              draggableIngredient
+            )
+          : state.ingredients.splice(
+              action.payload.dropIndex,
+              0,
+              draggableIngredient
+            );
+
         return {
           ...state,
           ingredients: [...state.ingredients],
