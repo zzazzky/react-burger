@@ -59,7 +59,7 @@ const DraggableContainer: React.FC<IDraggableContainerProps> = ({
   }));
 
   return (
-    <div
+    <li
       className={
         isHover
           ? draggableIngredientStyles.itemContainerHover
@@ -74,7 +74,7 @@ const DraggableContainer: React.FC<IDraggableContainerProps> = ({
         thumbnail={ingredient.image}
         handleClose={() => deleteIngredient()}
       />
-    </div>
+    </li>
   );
 };
 

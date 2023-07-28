@@ -50,8 +50,7 @@ export const addIngredient =
     dispatch({
       type: ADD_CONSTRUCTOR_INGREDIENT,
       payload: {
-        ingredient: ingredient,
-        uuid: uuidv4(),
+        ingredient: { ...ingredient, uuid: uuidv4() },
       },
     });
   };
