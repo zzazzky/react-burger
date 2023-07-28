@@ -9,7 +9,7 @@ import {
   DELETE_CURRENT_INGREDIENT,
 } from '../сonstants/actions';
 
-const ingredientsInitialState: IIngredientState = {
+export const ingredientsInitialState: IIngredientState = {
   buns: null,
   sauces: null,
   mains: null,
@@ -19,7 +19,7 @@ const ingredientsInitialState: IIngredientState = {
   currentIngredient: null,
 };
 
-const ingredients = (
+export const ingredients = (
   state = ingredientsInitialState,
   action: TIngredient
 ): IIngredientState => {
@@ -86,5 +86,3 @@ const ingredients = (
       return state;
   }
 };
-
-export default ingredients;

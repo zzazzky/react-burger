@@ -24,7 +24,6 @@ export const socketMiddleware = (): Middleware => {
       const { dispatch } = store;
 
       if (action.type === FEED_WS_CONNECTION_START) {
-        console.log(action.type);
         if (!action.payload.shouldAuth) {
           socket = new WebSocket(action.payload.wsUrl);
           url = action.payload.wsUrl;
@@ -56,23 +55,19 @@ export const socketMiddleware = (): Middleware => {
 
       if (action.type === FEED_WS_CLOSE_CONNECTION) {
         socket?.close(1000, 'CLOSE_GOING_AWAY');
-        console.log(action.type);
       }
       if (socket) {
         socket.onopen = (event) => {
-          console.log(FEED_WS_CONNECTION_SUCCESS);
           dispatch({ type: FEED_WS_CONNECTION_SUCCESS, payload: event });
         };
 
         socket.onerror = (event) => {
-          console.log(FEED_WS_CONNECTION_ERROR);
           dispatch({
             type: FEED_WS_CONNECTION_ERROR,
           });
         };
 
         socket.onmessage = (event) => {
-          console.log(FEED_WS_GET_MESSAGE);
           dispatch({
             type: FEED_WS_GET_MESSAGE,
             payload: JSON.parse(event.data),

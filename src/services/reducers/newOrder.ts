@@ -6,14 +6,14 @@ import {
 } from '../сonstants/actions';
 import { INewOrderState } from '../../types/store-interface';
 
-const newOrderInitialState: INewOrderState = {
+export const newOrderInitialState: INewOrderState = {
   info: null,
   orderRequest: false,
   orderFeedFailed: false,
   orderFeedSuccess: false,
 };
 
-const newOrder = (
+export const newOrder = (
   state = newOrderInitialState,
   action: TOrder
 ): INewOrderState => {
@@ -48,5 +48,3 @@ const newOrder = (
       return state;
   }
 };
-
-export default newOrder;

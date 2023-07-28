@@ -6,13 +6,16 @@ import {
 import { TToken } from '../actions/token';
 import { ITokenState } from '../../types/store-interface';
 
-const tokenInitialState: ITokenState = {
+export const tokenInitialState: ITokenState = {
   isTokenRequest: false,
   isTokenRequestSuccess: false,
   isTokenRequestFailed: false,
 };
 
-const token = (state = tokenInitialState, action: TToken): ITokenState => {
+export const token = (
+  state = tokenInitialState,
+  action: TToken
+): ITokenState => {
   switch (action.type) {
     case GET_TOKEN_FEED:
       return {
@@ -41,5 +44,3 @@ const token = (state = tokenInitialState, action: TToken): ITokenState => {
       return state;
   }
 };
-
-export default token;

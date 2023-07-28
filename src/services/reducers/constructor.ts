@@ -7,13 +7,13 @@ import {
 } from '../сonstants/actions';
 import { IConstructorState } from '../../types/store-interface';
 
-const constructorInitialState: IConstructorState = {
+export const constructorInitialState: IConstructorState = {
   bun: null,
   ingredients: null,
   sum: 0,
 };
 
-const constructor = (
+export const constructor = (
   state = constructorInitialState,
   action: TConstructor
 ): IConstructorState => {
@@ -95,5 +95,3 @@ const constructor = (
       return state;
   }
 };
-
-export default constructor;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useEffect } from 'react';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
-import './app.css';
+import appStyles from './app.module.css';
 import AppHeader from '../app-header/app-header';
 import BurgerMaker from '../../pages/burger-maker/burger-maker';
 import NotFound from '../../pages/not-found/not-found';
@@ -39,11 +39,6 @@ const App: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    console.log(localStorage.getItem('token'));
-    console.log(cookie.getCookie('accessToken'));
-  }, []);
-
-  useEffect(() => {
     dispatch(getUserInfo());
   }, []);
 
@@ -54,9 +49,9 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <div className='app'>
+    <div className={appStyles.app}>
       <AppHeader />
-      <main className='pt-10 pb-10 main'>
+      <main className={`pt-10 pb-10 ${appStyles.main}`}>
         <Routes location={location.state?.background || location}>
           <Route
             path='/'

@@ -53,7 +53,6 @@ const OrderInfo: React.FC = () => {
 
   useEffect(() => {
     if (!ordersFeedSuccess) {
-      console.log(location.pathname);
       location.pathname.startsWith('/feed/')
         ? dispatch(
             startWS({

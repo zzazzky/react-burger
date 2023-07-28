@@ -1,86 +1,56 @@
-import newOrder from '../../../services/reducers/newOrder';
+import {
+  newOrder,
+  newOrderInitialState,
+} from '../../../services/reducers/newOrder';
 import {
   GET_ORDER_FEED,
   GET_ORDER_FEED_FAILED,
   GET_ORDER_FEED_SUCCESS,
 } from '../../../services/сonstants/actions';
 
+const requestState = {
+  ...newOrderInitialState,
+  orderRequest: true,
+};
+
+const testUserInfo = {
+  number: 1111,
+  name: 'test',
+};
+
 describe('newOrder reducer', () => {
   it('should return the initial state', () => {
-    expect(newOrder(undefined, {})).toEqual({
-      info: null,
-      orderRequest: false,
-      orderFeedFailed: false,
-      orderFeedSuccess: false,
-    });
+    expect(newOrder(undefined, {})).toEqual(newOrderInitialState);
   });
 
   it('should handle GET_ORDER_FEED', () => {
     expect(
-      newOrder(
-        {
-          info: null,
-          orderRequest: false,
-          orderFeedFailed: false,
-          orderFeedSuccess: false,
-        },
-        {
-          type: GET_ORDER_FEED,
-        }
-      )
-    ).toEqual({
-      info: null,
-      orderRequest: true,
-      orderFeedFailed: false,
-      orderFeedSuccess: false,
-    });
+      newOrder(newOrderInitialState, {
+        type: GET_ORDER_FEED,
+      })
+    ).toEqual(requestState);
   });
 
   it('should handle GET_ORDER_FEED_FAILED', () => {
     expect(
-      newOrder(
-        {
-          info: null,
-          orderRequest: true,
-          orderFeedFailed: false,
-          orderFeedSuccess: false,
-        },
-        {
-          type: GET_ORDER_FEED_FAILED,
-        }
-      )
+      newOrder(requestState, {
+        type: GET_ORDER_FEED_FAILED,
+      })
     ).toEqual({
-      info: null,
-      orderRequest: false,
+      ...newOrderInitialState,
       orderFeedFailed: true,
-      orderFeedSuccess: false,
     });
   });
 
   it('should handle GET_ORDER_FEED_SUCCESS', () => {
     expect(
-      newOrder(
-        {
-          info: null,
-          orderRequest: true,
-          orderFeedFailed: false,
-          orderFeedSuccess: false,
-        },
-        {
-          type: GET_ORDER_FEED_SUCCESS,
-          payload: {
-            number: 1111,
-            name: 'test',
-          },
-        }
-      )
+      newOrder(requestState, {
+        type: GET_ORDER_FEED_SUCCESS,
+        payload: testUserInfo,
+      })
     ).toEqual({
-      info: {
-        number: 1111,
-        name: 'test',
-      },
-      orderRequest: false,
-      orderFeedFailed: false,
+      ...newOrderInitialState,
+      info: testUserInfo,
       orderFeedSuccess: true,
     });
   });

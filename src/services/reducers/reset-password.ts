@@ -9,7 +9,7 @@ import {
 import { TResetPasswordFeed } from '../actions/reset-password';
 import { IResetPasswordState } from '../../types/store-interface';
 
-const resetPasswordInitialState: IResetPasswordState = {
+export const resetPasswordInitialState: IResetPasswordState = {
   sendResetCodeRequest: {
     isResetCodeRequest: false,
     isResetCodeSuccess: false,
@@ -22,7 +22,7 @@ const resetPasswordInitialState: IResetPasswordState = {
   },
 };
 
-const resetPassword = (
+export const resetPassword = (
   state = resetPasswordInitialState,
   action: TResetPasswordFeed
 ): IResetPasswordState => {
@@ -97,5 +97,3 @@ const resetPassword = (
       return state;
   }
 };
-
-export default resetPassword;

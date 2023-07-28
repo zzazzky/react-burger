@@ -20,7 +20,7 @@ import { TLogout } from '../actions/logout';
 
 type TProfile = TUser | TAuth | TLogout;
 
-const profileInitialState: IProfileState = {
+export const profileInitialState: IProfileState = {
   user: {
     email: null,
     name: null,
@@ -48,7 +48,7 @@ const profileInitialState: IProfileState = {
   },
 };
 
-const profile = (
+export const profile = (
   state = profileInitialState,
   action: TProfile
 ): IProfileState => {
@@ -201,5 +201,3 @@ const profile = (
       return state;
   }
 };
-
-export default profile;

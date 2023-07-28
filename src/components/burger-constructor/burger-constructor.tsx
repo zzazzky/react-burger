@@ -13,7 +13,7 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
 import { sendOrder } from '../../services/actions/order';
-import { ADD_CONSTRUCTOR_INGREDIENT } from '../../services/сonstants/actions';
+import { addIngredient } from '../../services/actions/constructor';
 import { IIngredient } from '../../types/store-interface';
 
 const BurgerConstructor: React.FC = () => {
@@ -37,12 +37,7 @@ const BurgerConstructor: React.FC = () => {
   });
 
   const handleIngredientDrop = (ingredient: IIngredient) => {
-    dispatch({
-      type: ADD_CONSTRUCTOR_INGREDIENT,
-      payload: {
-        ingredient: ingredient,
-      },
-    });
+    dispatch(addIngredient(ingredient));
   };
 
   const handleOrderButtonClick = useCallback(() => {
@@ -82,7 +77,7 @@ const BurgerConstructor: React.FC = () => {
           {currentIngredients?.map((item, index) => {
             return (
               <DraggableContainer
-                key={item._id + index}
+                key={item.uuid}
                 ingredient={item}
                 index={index}
               />

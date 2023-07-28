@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import { IIngredient } from '../../types/store-interface';
 import {
   DELETE_CONSTRUCTOR_INGREDIENT,
@@ -5,6 +6,7 @@ import {
   SORT_CONSTRUCTOR_INGREDIENTS,
   SET_CONSTRUCTOR,
 } from '../сonstants/actions';
+import { AppDispatch } from '../../types/thunk-dispatch-types';
 
 interface ISetConstructor {
   readonly type: typeof SET_CONSTRUCTOR;
@@ -42,3 +44,14 @@ export type TConstructor =
   | IDeleteConstructorIngredient
   | IAddConstructorIngredient
   | ISortConstructorIngredient;
+
+export const addIngredient =
+  (ingredient: IIngredient) => (dispatch: AppDispatch) => {
+    dispatch({
+      type: ADD_CONSTRUCTOR_INGREDIENT,
+      payload: {
+        ingredient: ingredient,
+        uuid: uuidv4(),
+      },
+    });
+  };

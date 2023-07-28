@@ -1,4 +1,7 @@
-import profile from '../../../services/reducers/profile';
+import {
+  profile,
+  profileInitialState,
+} from '../../../services/reducers/profile';
 import {
   GET_USER_INFO_FEED,
   GET_USER_INFO_FEED_FAILED,
@@ -14,97 +17,46 @@ import {
   GET_LOGOUT_FEED_SUCCESS,
 } from '../../../services/сonstants/actions';
 
+const testUser = { email: '1@ya.ru', name: 'test' };
+
+const loggedInState = {
+  ...testUser,
+  isLoggedIn: true,
+};
+
+const authRequestState = {
+  ...profileInitialState.authRequest,
+  isAuthRequest: true,
+};
+
+const logoutRequestState = {
+  ...profileInitialState.logoutRequest,
+  isLogoutRequest: true,
+};
+
+const userInfoRequestState = {
+  ...profileInitialState.userInfoRequest,
+  isUserInfoRequest: true,
+};
+
+const changeUserInfoRequestState = {
+  ...profileInitialState.changeUserInfoRequest,
+  isChangeUserInfoRequest: true,
+};
+
 describe('profile reducer', () => {
   it('should return the initial state', () => {
-    expect(profile(undefined, {})).toEqual({
-      user: {
-        email: null,
-        name: null,
-        isLoggedIn: false,
-      },
-      authRequest: {
-        isAuthRequest: false,
-        isAuthRequestSuccess: false,
-        isAuthRequestFailed: false,
-      },
-      logoutRequest: {
-        isLogoutRequest: false,
-        isLogoutRequestSuccess: false,
-        isLogoutRequestFailed: false,
-      },
-      userInfoRequest: {
-        isUserInfoRequest: false,
-        isUserInfoRequestSuccess: false,
-        isUserInfoRequestFailed: false,
-      },
-      changeUserInfoRequest: {
-        isChangeUserInfoRequest: false,
-        isChangeUserInfoRequestFailed: false,
-        isChangeUserInfoRequestSuccess: false,
-      },
-    });
+    expect(profile(undefined, {})).toEqual(profileInitialState);
   });
 
   it('should handle GET_AUTH_FEED', () => {
     expect(
-      profile(
-        {
-          user: {
-            email: null,
-            name: null,
-            isLoggedIn: false,
-          },
-          authRequest: {
-            isAuthRequest: false,
-            isAuthRequestSuccess: false,
-            isAuthRequestFailed: false,
-          },
-          logoutRequest: {
-            isLogoutRequest: false,
-            isLogoutRequestSuccess: false,
-            isLogoutRequestFailed: false,
-          },
-          userInfoRequest: {
-            isUserInfoRequest: false,
-            isUserInfoRequestSuccess: false,
-            isUserInfoRequestFailed: false,
-          },
-          changeUserInfoRequest: {
-            isChangeUserInfoRequest: false,
-            isChangeUserInfoRequestFailed: false,
-            isChangeUserInfoRequestSuccess: false,
-          },
-        },
-        {
-          type: GET_AUTH_FEED,
-        }
-      )
+      profile(profileInitialState, {
+        type: GET_AUTH_FEED,
+      })
     ).toEqual({
-      user: {
-        email: null,
-        name: null,
-        isLoggedIn: false,
-      },
-      authRequest: {
-        isAuthRequest: true,
-        isAuthRequestSuccess: false,
-        isAuthRequestFailed: false,
-      },
-      logoutRequest: {
-        isLogoutRequest: false,
-        isLogoutRequestSuccess: false,
-        isLogoutRequestFailed: false,
-      },
-      userInfoRequest: {
-        isUserInfoRequest: false,
-        isUserInfoRequestSuccess: false,
-        isUserInfoRequestFailed: false,
-      },
-      changeUserInfoRequest: {
-        isChangeUserInfoRequest: false,
-        isChangeUserInfoRequestFailed: false,
-        isChangeUserInfoRequestSuccess: false,
-      },
+      ...profileInitialState,
+      authRequest: authRequestState,
     });
   });
 
@@ -112,61 +64,18 @@ describe('profile reducer', () => {
     expect(
       profile(
         {
-          user: {
-            email: null,
-            name: null,
-            isLoggedIn: false,
-          },
-          authRequest: {
-            isAuthRequest: true,
-            isAuthRequestSuccess: false,
-            isAuthRequestFailed: false,
-          },
-          logoutRequest: {
-            isLogoutRequest: false,
-            isLogoutRequestSuccess: false,
-            isLogoutRequestFailed: false,
-          },
-          userInfoRequest: {
-            isUserInfoRequest: false,
-            isUserInfoRequestSuccess: false,
-            isUserInfoRequestFailed: false,
-          },
-          changeUserInfoRequest: {
-            isChangeUserInfoRequest: false,
-            isChangeUserInfoRequestFailed: false,
-            isChangeUserInfoRequestSuccess: false,
-          },
+          ...profileInitialState,
+          authRequest: authRequestState,
         },
         {
           type: GET_AUTH_FEED_FAILED,
         }
       )
     ).toEqual({
-      user: {
-        email: null,
-        name: null,
-        isLoggedIn: false,
-      },
+      ...profileInitialState,
       authRequest: {
-        isAuthRequest: false,
-        isAuthRequestSuccess: false,
+        ...profileInitialState.authRequest,
         isAuthRequestFailed: true,
-      },
-      logoutRequest: {
-        isLogoutRequest: false,
-        isLogoutRequestSuccess: false,
-        isLogoutRequestFailed: false,
-      },
-      userInfoRequest: {
-        isUserInfoRequest: false,
-        isUserInfoRequestSuccess: false,
-        isUserInfoRequestFailed: false,
-      },
-      changeUserInfoRequest: {
-        isChangeUserInfoRequest: false,
-        isChangeUserInfoRequestFailed: false,
-        isChangeUserInfoRequestSuccess: false,
       },
     });
   });
@@ -175,65 +84,20 @@ describe('profile reducer', () => {
     expect(
       profile(
         {
-          user: {
-            email: null,
-            name: null,
-            isLoggedIn: false,
-          },
-          authRequest: {
-            isAuthRequest: true,
-            isAuthRequestSuccess: false,
-            isAuthRequestFailed: false,
-          },
-          logoutRequest: {
-            isLogoutRequest: false,
-            isLogoutRequestSuccess: false,
-            isLogoutRequestFailed: false,
-          },
-          userInfoRequest: {
-            isUserInfoRequest: false,
-            isUserInfoRequestSuccess: false,
-            isUserInfoRequestFailed: false,
-          },
-          changeUserInfoRequest: {
-            isChangeUserInfoRequest: false,
-            isChangeUserInfoRequestFailed: false,
-            isChangeUserInfoRequestSuccess: false,
-          },
+          ...profileInitialState,
+          authRequest: authRequestState,
         },
         {
           type: GET_AUTH_FEED_SUCCESS,
-          payload: {
-            email: '1@ya.ru',
-            name: 'test',
-          },
+          payload: testUser,
         }
       )
     ).toEqual({
-      user: {
-        email: '1@ya.ru',
-        name: 'test',
-        isLoggedIn: true,
-      },
+      ...profileInitialState,
+      user: loggedInState,
       authRequest: {
-        isAuthRequest: false,
+        ...profileInitialState.authRequest,
         isAuthRequestSuccess: true,
-        isAuthRequestFailed: false,
-      },
-      logoutRequest: {
-        isLogoutRequest: false,
-        isLogoutRequestSuccess: false,
-        isLogoutRequestFailed: false,
-      },
-      userInfoRequest: {
-        isUserInfoRequest: false,
-        isUserInfoRequestSuccess: false,
-        isUserInfoRequestFailed: false,
-      },
-      changeUserInfoRequest: {
-        isChangeUserInfoRequest: false,
-        isChangeUserInfoRequestFailed: false,
-        isChangeUserInfoRequestSuccess: false,
       },
     });
   });
@@ -241,63 +105,15 @@ describe('profile reducer', () => {
   it('should handle GET_LOGOUT_FEED', () => {
     expect(
       profile(
-        {
-          user: {
-            email: '1@ya.ru',
-            name: 'test',
-            isLoggedIn: true,
-          },
-          authRequest: {
-            isAuthRequest: false,
-            isAuthRequestSuccess: true,
-            isAuthRequestFailed: false,
-          },
-          logoutRequest: {
-            isLogoutRequest: false,
-            isLogoutRequestSuccess: false,
-            isLogoutRequestFailed: false,
-          },
-          userInfoRequest: {
-            isUserInfoRequest: false,
-            isUserInfoRequestSuccess: false,
-            isUserInfoRequestFailed: false,
-          },
-          changeUserInfoRequest: {
-            isChangeUserInfoRequest: false,
-            isChangeUserInfoRequestFailed: false,
-            isChangeUserInfoRequestSuccess: false,
-          },
-        },
+        { ...profileInitialState, user: loggedInState },
         {
           type: GET_LOGOUT_FEED,
         }
       )
     ).toEqual({
-      user: {
-        email: '1@ya.ru',
-        name: 'test',
-        isLoggedIn: true,
-      },
-      authRequest: {
-        isAuthRequest: false,
-        isAuthRequestSuccess: true,
-        isAuthRequestFailed: false,
-      },
-      logoutRequest: {
-        isLogoutRequest: true,
-        isLogoutRequestSuccess: false,
-        isLogoutRequestFailed: false,
-      },
-      userInfoRequest: {
-        isUserInfoRequest: false,
-        isUserInfoRequestSuccess: false,
-        isUserInfoRequestFailed: false,
-      },
-      changeUserInfoRequest: {
-        isChangeUserInfoRequest: false,
-        isChangeUserInfoRequestFailed: false,
-        isChangeUserInfoRequestSuccess: false,
-      },
+      ...profileInitialState,
+      user: loggedInState,
+      logoutRequest: logoutRequestState,
     });
   });
 
@@ -305,61 +121,20 @@ describe('profile reducer', () => {
     expect(
       profile(
         {
-          user: {
-            email: '1@ya.ru',
-            name: 'test',
-            isLoggedIn: true,
-          },
-          authRequest: {
-            isAuthRequest: false,
-            isAuthRequestSuccess: true,
-            isAuthRequestFailed: false,
-          },
-          logoutRequest: {
-            isLogoutRequest: false,
-            isLogoutRequestSuccess: false,
-            isLogoutRequestFailed: false,
-          },
-          userInfoRequest: {
-            isUserInfoRequest: false,
-            isUserInfoRequestSuccess: false,
-            isUserInfoRequestFailed: false,
-          },
-          changeUserInfoRequest: {
-            isChangeUserInfoRequest: false,
-            isChangeUserInfoRequestFailed: false,
-            isChangeUserInfoRequestSuccess: false,
-          },
+          ...profileInitialState,
+          user: loggedInState,
+          logoutRequest: logoutRequestState,
         },
         {
           type: GET_LOGOUT_FEED_FAILED,
         }
       )
     ).toEqual({
-      user: {
-        email: '1@ya.ru',
-        name: 'test',
-        isLoggedIn: true,
-      },
-      authRequest: {
-        isAuthRequest: false,
-        isAuthRequestSuccess: true,
-        isAuthRequestFailed: false,
-      },
+      ...profileInitialState,
+      user: loggedInState,
       logoutRequest: {
-        isLogoutRequest: false,
-        isLogoutRequestSuccess: false,
+        ...profileInitialState.logoutRequest,
         isLogoutRequestFailed: true,
-      },
-      userInfoRequest: {
-        isUserInfoRequest: false,
-        isUserInfoRequestSuccess: false,
-        isUserInfoRequestFailed: false,
-      },
-      changeUserInfoRequest: {
-        isChangeUserInfoRequest: false,
-        isChangeUserInfoRequestFailed: false,
-        isChangeUserInfoRequestSuccess: false,
       },
     });
   });
@@ -368,125 +143,31 @@ describe('profile reducer', () => {
     expect(
       profile(
         {
-          user: {
-            email: '1@ya.ru',
-            name: 'test',
-            isLoggedIn: true,
-          },
-          authRequest: {
-            isAuthRequest: false,
-            isAuthRequestSuccess: true,
-            isAuthRequestFailed: false,
-          },
-          logoutRequest: {
-            isLogoutRequest: false,
-            isLogoutRequestSuccess: false,
-            isLogoutRequestFailed: false,
-          },
-          userInfoRequest: {
-            isUserInfoRequest: false,
-            isUserInfoRequestSuccess: false,
-            isUserInfoRequestFailed: false,
-          },
-          changeUserInfoRequest: {
-            isChangeUserInfoRequest: false,
-            isChangeUserInfoRequestFailed: false,
-            isChangeUserInfoRequestSuccess: false,
-          },
+          ...profileInitialState,
+          user: loggedInState,
+          logoutRequest: logoutRequestState,
         },
         {
           type: GET_LOGOUT_FEED_SUCCESS,
         }
       )
     ).toEqual({
-      user: {
-        email: null,
-        name: null,
-        isLoggedIn: false,
-      },
-      authRequest: {
-        isAuthRequest: false,
-        isAuthRequestSuccess: true,
-        isAuthRequestFailed: false,
-      },
+      ...profileInitialState,
       logoutRequest: {
-        isLogoutRequest: false,
-        isLogoutRequestFailed: false,
+        ...profileInitialState.logoutRequest,
         isLogoutRequestSuccess: true,
-      },
-      userInfoRequest: {
-        isUserInfoRequest: false,
-        isUserInfoRequestSuccess: false,
-        isUserInfoRequestFailed: false,
-      },
-      changeUserInfoRequest: {
-        isChangeUserInfoRequest: false,
-        isChangeUserInfoRequestFailed: false,
-        isChangeUserInfoRequestSuccess: false,
       },
     });
   });
 
   it('should handle GET_USER_INFO_FEED', () => {
     expect(
-      profile(
-        {
-          user: {
-            email: null,
-            name: null,
-            isLoggedIn: false,
-          },
-          authRequest: {
-            isAuthRequest: false,
-            isAuthRequestSuccess: false,
-            isAuthRequestFailed: false,
-          },
-          logoutRequest: {
-            isLogoutRequest: false,
-            isLogoutRequestSuccess: false,
-            isLogoutRequestFailed: false,
-          },
-          userInfoRequest: {
-            isUserInfoRequest: false,
-            isUserInfoRequestSuccess: false,
-            isUserInfoRequestFailed: false,
-          },
-          changeUserInfoRequest: {
-            isChangeUserInfoRequest: false,
-            isChangeUserInfoRequestFailed: false,
-            isChangeUserInfoRequestSuccess: false,
-          },
-        },
-        {
-          type: GET_USER_INFO_FEED,
-        }
-      )
+      profile(profileInitialState, {
+        type: GET_USER_INFO_FEED,
+      })
     ).toEqual({
-      user: {
-        email: null,
-        name: null,
-        isLoggedIn: false,
-      },
-      authRequest: {
-        isAuthRequest: false,
-        isAuthRequestSuccess: false,
-        isAuthRequestFailed: false,
-      },
-      logoutRequest: {
-        isLogoutRequest: false,
-        isLogoutRequestSuccess: false,
-        isLogoutRequestFailed: false,
-      },
-      userInfoRequest: {
-        isUserInfoRequest: true,
-        isUserInfoRequestSuccess: false,
-        isUserInfoRequestFailed: false,
-      },
-      changeUserInfoRequest: {
-        isChangeUserInfoRequest: false,
-        isChangeUserInfoRequestFailed: false,
-        isChangeUserInfoRequestSuccess: false,
-      },
+      ...profileInitialState,
+      userInfoRequest: userInfoRequestState,
     });
   });
 
@@ -494,61 +175,18 @@ describe('profile reducer', () => {
     expect(
       profile(
         {
-          user: {
-            email: null,
-            name: null,
-            isLoggedIn: false,
-          },
-          authRequest: {
-            isAuthRequest: false,
-            isAuthRequestSuccess: false,
-            isAuthRequestFailed: false,
-          },
-          logoutRequest: {
-            isLogoutRequest: false,
-            isLogoutRequestSuccess: false,
-            isLogoutRequestFailed: false,
-          },
-          userInfoRequest: {
-            isUserInfoRequest: true,
-            isUserInfoRequestFailed: false,
-            isUserInfoRequestSuccess: false,
-          },
-          changeUserInfoRequest: {
-            isChangeUserInfoRequest: false,
-            isChangeUserInfoRequestFailed: false,
-            isChangeUserInfoRequestSuccess: false,
-          },
+          ...profileInitialState,
+          userInfoRequest: userInfoRequestState,
         },
         {
           type: GET_USER_INFO_FEED_FAILED,
         }
       )
     ).toEqual({
-      user: {
-        email: null,
-        name: null,
-        isLoggedIn: false,
-      },
-      authRequest: {
-        isAuthRequest: false,
-        isAuthRequestSuccess: false,
-        isAuthRequestFailed: false,
-      },
-      logoutRequest: {
-        isLogoutRequest: false,
-        isLogoutRequestSuccess: false,
-        isLogoutRequestFailed: false,
-      },
+      ...profileInitialState,
       userInfoRequest: {
-        isUserInfoRequest: false,
-        isUserInfoRequestSuccess: false,
+        ...profileInitialState.userInfoRequest,
         isUserInfoRequestFailed: true,
-      },
-      changeUserInfoRequest: {
-        isChangeUserInfoRequest: false,
-        isChangeUserInfoRequestFailed: false,
-        isChangeUserInfoRequestSuccess: false,
       },
     });
   });
@@ -557,65 +195,20 @@ describe('profile reducer', () => {
     expect(
       profile(
         {
-          user: {
-            email: null,
-            name: null,
-            isLoggedIn: false,
-          },
-          authRequest: {
-            isAuthRequest: false,
-            isAuthRequestSuccess: false,
-            isAuthRequestFailed: false,
-          },
-          logoutRequest: {
-            isLogoutRequest: false,
-            isLogoutRequestSuccess: false,
-            isLogoutRequestFailed: false,
-          },
-          userInfoRequest: {
-            isUserInfoRequest: true,
-            isUserInfoRequestSuccess: false,
-            isUserInfoRequestFailed: false,
-          },
-          changeUserInfoRequest: {
-            isChangeUserInfoRequest: false,
-            isChangeUserInfoRequestFailed: false,
-            isChangeUserInfoRequestSuccess: false,
-          },
+          ...profileInitialState,
+          userInfoRequest: userInfoRequestState,
         },
         {
           type: GET_USER_INFO_FEED_SUCCESS,
-          payload: {
-            email: '1@ya.ru',
-            name: 'test',
-          },
+          payload: testUser,
         }
       )
     ).toEqual({
-      user: {
-        email: '1@ya.ru',
-        name: 'test',
-        isLoggedIn: true,
-      },
-      authRequest: {
-        isAuthRequest: false,
-        isAuthRequestSuccess: false,
-        isAuthRequestFailed: false,
-      },
-      logoutRequest: {
-        isLogoutRequest: false,
-        isLogoutRequestSuccess: false,
-        isLogoutRequestFailed: false,
-      },
+      ...profileInitialState,
+      user: loggedInState,
       userInfoRequest: {
-        isUserInfoRequest: false,
+        ...profileInitialState.userInfoRequest,
         isUserInfoRequestSuccess: true,
-        isUserInfoRequestFailed: false,
-      },
-      changeUserInfoRequest: {
-        isChangeUserInfoRequest: false,
-        isChangeUserInfoRequestFailed: false,
-        isChangeUserInfoRequestSuccess: false,
       },
     });
   });
@@ -623,63 +216,15 @@ describe('profile reducer', () => {
   it('should handle CHANGE_USER_INFO_FEED', () => {
     expect(
       profile(
-        {
-          user: {
-            email: '1@ya.ru',
-            name: 'test',
-            isLoggedIn: true,
-          },
-          authRequest: {
-            isAuthRequest: false,
-            isAuthRequestSuccess: false,
-            isAuthRequestFailed: false,
-          },
-          logoutRequest: {
-            isLogoutRequest: false,
-            isLogoutRequestSuccess: false,
-            isLogoutRequestFailed: false,
-          },
-          userInfoRequest: {
-            isUserInfoRequest: false,
-            isUserInfoRequestSuccess: false,
-            isUserInfoRequestFailed: false,
-          },
-          changeUserInfoRequest: {
-            isChangeUserInfoRequest: false,
-            isChangeUserInfoRequestFailed: false,
-            isChangeUserInfoRequestSuccess: false,
-          },
-        },
+        { ...profileInitialState, user: loggedInState },
         {
           type: CHANGE_USER_INFO_FEED,
         }
       )
     ).toEqual({
-      user: {
-        email: '1@ya.ru',
-        name: 'test',
-        isLoggedIn: true,
-      },
-      authRequest: {
-        isAuthRequest: false,
-        isAuthRequestSuccess: false,
-        isAuthRequestFailed: false,
-      },
-      logoutRequest: {
-        isLogoutRequest: false,
-        isLogoutRequestSuccess: false,
-        isLogoutRequestFailed: false,
-      },
-      userInfoRequest: {
-        isUserInfoRequest: false,
-        isUserInfoRequestSuccess: false,
-        isUserInfoRequestFailed: false,
-      },
-      changeUserInfoRequest: {
-        isChangeUserInfoRequest: true,
-        isChangeUserInfoRequestFailed: false,
-        isChangeUserInfoRequestSuccess: false,
-      },
+      ...profileInitialState,
+      user: loggedInState,
+      changeUserInfoRequest: changeUserInfoRequestState,
     });
   });
 
@@ -687,61 +232,20 @@ describe('profile reducer', () => {
     expect(
       profile(
         {
-          user: {
-            email: '1@ya.ru',
-            name: 'test',
-            isLoggedIn: true,
-          },
-          authRequest: {
-            isAuthRequest: false,
-            isAuthRequestSuccess: false,
-            isAuthRequestFailed: false,
-          },
-          logoutRequest: {
-            isLogoutRequest: false,
-            isLogoutRequestSuccess: false,
-            isLogoutRequestFailed: false,
-          },
-          userInfoRequest: {
-            isUserInfoRequest: false,
-            isUserInfoRequestSuccess: false,
-            isUserInfoRequestFailed: false,
-          },
-          changeUserInfoRequest: {
-            isChangeUserInfoRequest: true,
-            isChangeUserInfoRequestFailed: false,
-            isChangeUserInfoRequestSuccess: false,
-          },
+          ...profileInitialState,
+          user: loggedInState,
+          changeUserInfoRequest: changeUserInfoRequestState,
         },
         {
           type: CHANGE_USER_INFO_FEED_FAILED,
         }
       )
     ).toEqual({
-      user: {
-        email: '1@ya.ru',
-        name: 'test',
-        isLoggedIn: true,
-      },
-      authRequest: {
-        isAuthRequest: false,
-        isAuthRequestSuccess: false,
-        isAuthRequestFailed: false,
-      },
-      logoutRequest: {
-        isLogoutRequest: false,
-        isLogoutRequestSuccess: false,
-        isLogoutRequestFailed: false,
-      },
-      userInfoRequest: {
-        isUserInfoRequest: false,
-        isUserInfoRequestSuccess: false,
-        isUserInfoRequestFailed: false,
-      },
+      ...profileInitialState,
+      user: loggedInState,
       changeUserInfoRequest: {
-        isChangeUserInfoRequest: false,
+        ...profileInitialState.changeUserInfoRequest,
         isChangeUserInfoRequestFailed: true,
-        isChangeUserInfoRequestSuccess: false,
       },
     });
   });
@@ -750,31 +254,9 @@ describe('profile reducer', () => {
     expect(
       profile(
         {
-          user: {
-            email: '1@ya.ru',
-            name: 'test',
-            isLoggedIn: true,
-          },
-          authRequest: {
-            isAuthRequest: false,
-            isAuthRequestSuccess: false,
-            isAuthRequestFailed: false,
-          },
-          logoutRequest: {
-            isLogoutRequest: false,
-            isLogoutRequestSuccess: false,
-            isLogoutRequestFailed: false,
-          },
-          userInfoRequest: {
-            isUserInfoRequest: false,
-            isUserInfoRequestSuccess: false,
-            isUserInfoRequestFailed: false,
-          },
-          changeUserInfoRequest: {
-            isChangeUserInfoRequest: false,
-            isChangeUserInfoRequestFailed: false,
-            isChangeUserInfoRequestSuccess: false,
-          },
+          ...profileInitialState,
+          user: loggedInState,
+          changeUserInfoRequest: changeUserInfoRequestState,
         },
         {
           type: CHANGE_USER_INFO_FEED_SUCCESS,
@@ -785,29 +267,14 @@ describe('profile reducer', () => {
         }
       )
     ).toEqual({
+      ...profileInitialState,
       user: {
         email: '2@ya.ru',
         name: 'test1',
         isLoggedIn: true,
       },
-      authRequest: {
-        isAuthRequest: false,
-        isAuthRequestSuccess: false,
-        isAuthRequestFailed: false,
-      },
-      logoutRequest: {
-        isLogoutRequest: false,
-        isLogoutRequestSuccess: false,
-        isLogoutRequestFailed: false,
-      },
-      userInfoRequest: {
-        isUserInfoRequest: false,
-        isUserInfoRequestSuccess: false,
-        isUserInfoRequestFailed: false,
-      },
       changeUserInfoRequest: {
-        isChangeUserInfoRequest: false,
-        isChangeUserInfoRequestFailed: false,
+        ...profileInitialState.changeUserInfoRequest,
         isChangeUserInfoRequestSuccess: true,
       },
     });

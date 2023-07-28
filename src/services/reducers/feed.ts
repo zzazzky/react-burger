@@ -11,7 +11,7 @@ import {
   DELETE_CURRENT_ORDER,
 } from '../сonstants/actions';
 
-const feedInitialState: IFeedState = {
+export const feedInitialState: IFeedState = {
   orders: null,
   wsConnected: false,
   wsError: true,
@@ -20,7 +20,7 @@ const feedInitialState: IFeedState = {
   currentOrder: null,
 };
 
-const feed = (state = feedInitialState, action: TFeedWS): IFeedState => {
+export const feed = (state = feedInitialState, action: TFeedWS): IFeedState => {
   switch (action.type) {
     case FEED_WS_CONNECTION_START:
       return {
@@ -72,5 +72,3 @@ const feed = (state = feedInitialState, action: TFeedWS): IFeedState => {
       return state;
   }
 };
-
-export default feed;

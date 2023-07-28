@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import api from '../../utils/api';
 import {
   GET_INGREDIENT_FEED,
@@ -10,6 +11,7 @@ import {
 } from '../сonstants/actions';
 import { IIngredient } from '../../types/store-interface';
 import { AppDispatch } from '../../types/thunk-dispatch-types';
+import { ingredients } from '../reducers/ingredients';
 
 interface IIngredientFeed {
   readonly type: typeof GET_INGREDIENT_FEED;
@@ -67,15 +69,17 @@ export const getIngredientsFeed = () => (dispatch: AppDispatch) => {
         return Promise.reject(401);
       }
     })
-    .then((res: Array<IIngredient>) =>
+    .then((res: Array<IIngredient>) => {
       dispatch({
         type: SET_CONSTRUCTOR,
         payload: {
           bun: res.find((item) => item.type === 'bun') || null,
-          ingredients: res.filter((item) => item.type !== 'bun'),
+          ingredients: res
+            .filter((item) => item.type !== 'bun')
+            .map((ingredient) => ({ ...ingredient, uuid: uuidv4() })),
         },
-      })
-    )
+      });
+    })
     .then(() =>
       dispatch({
         type: GET_INGREDIENT_FEED_SUCCESS,
