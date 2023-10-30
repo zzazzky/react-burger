@@ -11,6 +11,7 @@
 - HTML5;
 - CSS;
 - JavaScript;
+- TypeScript;
 - Redux;
 - WebSockets;
 - Drag-n-Drop;
@@ -32,4 +33,4 @@
 ## Развертка
 
 Дополнительная развертка не требуется.
-Просмотреть содержимое сайта можно по ссылке: https://zzazzky.github.io/react-burger/main
+Просмотреть содержимое сайта можно по ссылке: https://zzazzky.github.io/react-burger/
