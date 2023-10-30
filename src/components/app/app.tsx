@@ -54,7 +54,7 @@ const App: React.FC = () => {
       <main className={`pt-10 pb-10 ${appStyles.main}`}>
         <Routes location={location.state?.background || location}>
           <Route
-            path='/'
+            path='/main'
             element={<BurgerMaker />}
           />
           {background && <Route path='/ingredients/:ingredientId' />}
