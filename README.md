@@ -11,6 +11,7 @@
 - HTML5;
 - CSS;
 - JavaScript;
+- TypeScript;
 - Redux;
 - WebSockets;
 - Drag-n-Drop;
