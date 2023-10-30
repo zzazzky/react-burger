@@ -4,6 +4,8 @@
   align-items: center;
   position: relative;
   text-align: center;
+  color: #fff;
+  text-decoration: none;
 }
 
 .image {
@@ -15,4 +17,9 @@
 .price {
   display: flex;
   flex-direction: row;
+}
+
+.containerDragging {
+  composes: container;
+  outline: 2px solid #8585ad;
 }

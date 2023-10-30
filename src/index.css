@@ -11,3 +11,28 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+.link {
+  text-decoration: none;
+  color: #4c4cff;
+}
+
+.link:hover {
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+li {
+  padding: 0;
+  margin: 0;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
